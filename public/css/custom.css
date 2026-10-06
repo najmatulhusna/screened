@@ -1,0 +1,1068 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+:root {
+    --bs-body-font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+    --bs-primary-rgb: 225, 29, 72;   /* crimson  */
+    --bs-link-color-rgb: 225, 29, 72;
+    --bs-link-hover-color-rgb: 190, 24, 60;
+    --bs-body-bg: #f4f5f7;
+    --bs-body-color: #212529;
+
+    --bs-body-color-rgb: 33, 37, 41;
+    --lte-sidebar-color: #c2c7d0;
+}
+
+.btn-primary {
+    --bs-btn-bg: #e11d48;
+    --bs-btn-border-color: #e11d48;
+    --bs-btn-hover-bg: #be123c;
+    --bs-btn-hover-border-color: #be123c;
+    --bs-btn-active-bg: #9f1239;
+    --bs-btn-active-border-color: #9f1239;
+}
+
+.btn-outline-primary {
+    --bs-btn-color: #e11d48;
+    --bs-btn-border-color: #e11d48;
+    --bs-btn-hover-bg: #e11d48;
+    --bs-btn-hover-border-color: #e11d48;
+}
+
+.app-sidebar {
+    background-color: #1f2430 !important;
+}
+
+.app-header {
+    background-color: #ffffff !important;
+}
+
+
+/* COLLECTION */
+.app-content .card:has(form[method="GET"]) {
+    background-color: transparent;
+    border: 0;
+    box-shadow: none;
+    margin-bottom: 1rem;
+}
+
+.app-content .card:has(form[method="GET"]) > .card-body {
+    padding: 0;
+}
+
+.app-content form[method="GET"] {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+}
+
+.app-content form[method="GET"] > .row {
+    display: contents;
+}
+
+.app-content form[method="GET"] .form-label {
+    display: none;
+}
+
+.app-content form[method="GET"] .row > div {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 0;
+}
+
+.app-content form[method="GET"] .col-lg-3 {
+    flex: 1 1 280px;
+}
+
+.app-content form[method="GET"] .col-lg-2 {
+    flex: 0 0 148px;
+}
+
+.app-content form[method="GET"] .col-lg-1 {
+    flex: 0 0 92px;
+}
+
+.app-content form[method="GET"] .row > div:last-child {
+    flex: 0 0 186px;
+}
+
+.app-content form[method="GET"] .form-control,
+.app-content form[method="GET"] .form-select,
+.app-content form[method="GET"] .input-group-text {
+    min-height: 38px;
+}
+
+.app-content form[method="GET"] .btn {
+    white-space: nowrap;
+}
+
+/*DETAIL*/
+.ratio.ratio-poster {
+    --bs-aspect-ratio: 150%;
+}
+
+.detail-meta {
+    display: block;
+    padding: .6rem 0;
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.detail-meta-value {
+    display: block;
+    min-width: 0;
+    margin-top: .25rem;
+    text-align: left;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.detail-meta-list > .col-12:last-child .detail-meta {
+    border-bottom: 0;
+}
+
+.detail-synopsis {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.detail-meta-value, .detail-synopsis,.card-body {
+    min-width: 0;
+}
+
+/* STATIS */
+body.public-page .container:has(.stats-summary) h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 600;
+    color: var(--text-primary);
+    padding-bottom: 0;
+    margin-bottom: 6px;
+    border: 0;
+}
+
+body.public-page .container:has(.stats-summary) .stats-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+body.public-page .container:has(.stats-summary) .stats-summary > p {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    min-height: 104px;
+    padding: 1rem .75rem;
+    border-radius: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-top: 2px solid var(--text-secondary);
+    color: var(--text-primary);
+    text-align: center;
+    font-size: .9rem;
+    font-weight: 500;
+    line-height: 1.35;
+    position: relative;
+    overflow: hidden;
+    transition: transform .3s ease, border-color .3s ease;
+}
+
+body.public-page .container:has(.stats-summary) .stats-summary > p:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-color);
+}
+
+body.public-page .container:has(.stats-summary) .stats-summary > p::before {
+    display: block;
+    font-size: 1.4rem;
+    line-height: 1;
+    color: var(--text-secondary);
+}
+
+body.public-page .container:has(.stats-summary) .stats-summary > p:nth-child(1) {
+    border-top-color: var(--success);
+}
+
+body.public-page .container:has(.stats-summary) .stats-summary > p:nth-child(1)::before {
+    content: "\F26E";
+    font-family: bootstrap-icons;
+    color: var(--success);
+}
+
+body.public-page .container:has(.stats-summary) .stats-summary > p:nth-child(2) {
+    border-top-color: #7f9cc0;
+}
+
+body.public-page .container:has(.stats-summary) .stats-summary > p:nth-child(2)::before {
+    content: "\F449";
+    font-family: bootstrap-icons;
+    color: #7f9cc0;
+}
+
+body.public-page .container:has(.stats-summary) .stats-summary > p:nth-child(3) {
+    border-top-color: var(--text-secondary);
+}
+
+body.public-page .container:has(.stats-summary) .stats-summary > p:nth-child(3)::before {
+    content: "\F03A";
+    font-family: bootstrap-icons;
+    color: var(--text-secondary);
+}
+
+
+/* ?? Average Rating -> aksen emas */
+body.public-page .container:has(.stats-summary) .stats-summary > p:nth-child(4) {
+    border-top-color: var(--accent);
+}
+
+body.public-page .container:has(.stats-summary) .stats-summary > p:nth-child(4)::before {
+    content: "\F005";
+    font-family: bootstrap-icons;
+    color: var(--accent);
+}
+
+/* Total Reviews */
+body.public-page .container:has(.stats-summary) .stats-summary > p:nth-child(5) {
+    border-top-color: var(--danger);
+}
+
+body.public-page .container:has(.stats-summary) .stats-summary > p:nth-child(5)::before {
+    content: "\F4AC";
+    font-family: bootstrap-icons;
+    color: var(--danger);
+}
+
+/* --- judul bagian --- */
+body.public-page .container:has(.stats-summary) h2 {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 2rem 0 .75rem;
+}
+
+body.public-page .container:has(.stats-summary) .review-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: .9rem 1.1rem;
+    margin-bottom: .75rem;
+    transition: border-color .2s ease, transform .2s ease;
+}
+
+body.public-page .container:has(.stats-summary) .review-card:hover {
+    border-color: var(--accent);
+    transform: translateX(4px);
+}
+
+body.public-page .container:has(.stats-summary) .review-card > a {
+    text-decoration: none;
+    color: inherit;
+}
+
+body.public-page .container:has(.stats-summary) .review-card > a > strong {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--text-primary);
+}
+
+body.public-page .container:has(.stats-summary) .review-card > a > strong:hover {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+body.public-page .container:has(.stats-summary) .review-card > span {
+    display: inline-block;
+    margin: .5rem .4rem 0 0;
+    padding: .2rem .55rem;
+    border-radius: 1rem;
+    background-color: rgba(255, 255, 255, .05);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: .8rem;
+    font-weight: 500;
+}
+
+body.public-page .container:has(.stats-summary) .review-card > span:nth-of-type(1) {
+    background-color: rgba(201, 162, 77, .15);
+    border-color: rgba(201, 162, 77, .45);
+    color: var(--accent);
+}
+
+body.public-page .container:has(.stats-summary) .review-card > span:nth-of-type(2) {
+    background-color: rgba(127, 156, 192, .15);
+    border-color: rgba(127, 156, 192, .45);
+    color: #a8c1dd;
+}
+
+body.public-page .container:has(.stats-summary) .review-card > p {
+    margin: .6rem 0 0;
+    color: var(--text-secondary);
+}
+
+body.public-page .container:has(.stats-summary) .stats-summary ~ p {
+    background-color: var(--bg-card);
+    border: 1px dashed var(--border-color);
+    border-radius: 10px;
+    padding: 2.5rem 1rem;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+body.public-page .container:has(.stats-summary) .review-card-actions {
+    margin-top: .8rem;
+    padding-top: .7rem;
+    border-top: 1px solid var(--border-color);
+}
+
+body.public-page .container:has(.stats-summary) .review-card-actions .btn {
+    font-size: .75rem;
+    padding: .2rem .6rem;
+}
+
+body.public-page .container:has(.stats-summary) .review-card-actions .btn:hover {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: #fff;
+}
+
+body.public-page {
+    --bg-primary: #0c0c0d;
+    --bg-secondary: #151517;
+    --bg-card: #1a1a1d;
+    --border-color: #2a2a2d;
+    --text-primary: #f5f5f0;
+    --text-secondary: #9a9a9e;
+    --accent: #c9a24d;
+    --accent-soft: rgba(201, 162, 77, .15);
+    --danger: #c96a4d;
+    --success: #6fae7c;
+
+    --font-display: 'Cormorant Garamond', serif;
+    --font-secondary: 'DM Sans', sans-serif;
+    --font-body: 'Manrope', sans-serif;
+
+    /* timpa variabel Bootstrap supaya komponennya ikut tema gelap */
+    --bs-body-font-family: var(--font-body);
+    --bs-body-bg: var(--bg-primary);
+    --bs-body-color: var(--text-primary);
+    --bs-body-color-rgb: 245, 245, 240;
+    --bs-border-color: var(--border-color);
+    --bs-secondary-color: var(--text-secondary);
+    --bs-secondary-bg: var(--bg-secondary);
+    --bs-tertiary-bg: var(--bg-secondary);
+    --bs-tertiary-color: var(--text-secondary);
+    --bs-emphasis-color: var(--text-primary);
+    --bs-link-color: var(--accent);
+    --bs-link-hover-color: #dcb75f;
+    --bs-primary-rgb: 201, 162, 77;
+    --bs-heading-color: var(--text-primary);
+    --lte-app-content-bg-color: var(--bg-primary);
+
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+}
+
+.public-container {
+    width: 100%;
+    max-width: 1240px;
+    margin-inline: auto;
+    padding-inline: 20px;
+}
+
+body.public-page .btn-primary {
+    --bs-btn-bg: var(--accent);
+    --bs-btn-border-color: var(--accent);
+    --bs-btn-hover-bg: #dcb75f;
+    --bs-btn-hover-border-color: #dcb75f;
+    --bs-btn-active-bg: #b28c3e;
+    --bs-btn-active-border-color: #b28c3e;
+    --bs-btn-color: #14130e;
+    --bs-btn-hover-color: #14130e;
+    --bs-btn-active-color: #14130e;
+}
+
+body.public-page .btn-outline-primary {
+    --bs-btn-color: var(--accent);
+    --bs-btn-border-color: var(--accent);
+    --bs-btn-hover-bg: var(--accent);
+    --bs-btn-hover-border-color: var(--accent);
+    --bs-btn-hover-color: #14130e;
+}
+
+/* 2. NAVBAR */
+body.public-page .public-navbar {
+    background: rgba(12, 12, 13, .92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 16px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+body.public-page .public-navbar .public-container {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+body.public-page .navbar-brand-wrap {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+    text-decoration: none;
+}
+
+body.public-page .navbar-brand-logo {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    color: var(--text-primary);
+}
+
+body.public-page .navbar-admin-tag {
+    font-family: var(--font-secondary);
+    font-style: italic;
+    font-size: .75rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+body.public-page .nav-menu {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+}
+
+body.public-page .nav-menu:first-of-type {
+    margin-left: auto;
+}
+
+body.public-page .nav-menu a,
+body.public-page .nav-link-btn {
+    background: none;
+    border: 0;
+    padding: 4px 0;
+    font-family: var(--font-body);
+    font-size: .85rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: .03em;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color .25s ease;
+    border-bottom: 1px solid transparent;
+}
+
+body.public-page .nav-menu a:hover,
+body.public-page .nav-menu a.active,
+body.public-page .nav-link-btn:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+body.public-page .nav-user {
+    font-family: var(--font-secondary);
+    font-size: .8rem;
+    color: var(--accent);
+    border: 1px solid var(--accent-soft);
+    background: var(--accent-soft);
+    border-radius: 30px;
+    padding: 3px 12px;
+}
+
+/* --- 3. KONTEN ------------------------------------------------------ */
+body.public-page .public-content {
+    background: var(--bg-primary);
+    padding: 0 0 60px;
+    overflow: visible;
+}
+
+body.public-page .public-content > .public-container > .container-fluid,
+body.public-page .public-content > .public-container > .container {
+    padding-inline: 0;
+    margin-inline: 0;
+    max-width: none;
+}
+
+/* judul halaman */
+body.public-page .public-content h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 600;
+    line-height: 1.1;
+    color: var(--text-primary);
+    border: 0;
+    padding: 0;
+    margin: 0 0 6px;
+}
+
+body.public-page .public-content h1 + p,
+body.public-page .public-content .text-body-secondary.mb-0 {
+    font-family: var(--font-secondary);
+    font-style: italic;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+}
+
+body.public-page .public-content h2 {
+    font-family: var(--font-secondary);
+    font-weight: 600;
+    font-size: .85rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 14px;
+}
+
+body.public-page .public-content h3 {
+    font-family: var(--font-secondary);
+    font-weight: 600;
+}
+
+body.public-page .public-content .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    box-shadow: none;
+    transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+}
+
+body.public-page .public-content a.card,
+body.public-page .public-content .card a.text-decoration-none:hover {
+    transform: translateY(-6px);
+    border-color: var(--accent);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, .4);
+}
+
+body.public-page .public-content .card-header {
+    background: transparent;
+    border-bottom: 1px solid var(--border-color);
+}
+
+body.public-page .public-content .card-footer {
+    background: transparent;
+    border-top: 1px solid var(--border-color);
+}
+
+body.public-page .public-content .ratio {
+    --bs-aspect-ratio: 150%;
+}
+
+body.public-page .public-content .card-img-top,
+body.public-page .public-content .ratio > img {
+    object-fit: cover;
+    background: var(--bg-secondary);
+    transition: transform .4s ease;
+}
+
+body.public-page .public-content a.card:hover .card-img-top,
+body.public-page .public-content a.card:hover .ratio > img {
+    transform: scale(1.04);
+}
+
+body.public-page .public-content .card-body {
+    padding: 14px 16px 16px;
+}
+
+body.public-page .public-content .fav-actions {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    padding: .7rem;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+}
+
+body.public-page .public-content .fav-actions form {
+    margin: 0;
+}
+
+body.public-page .public-content .fav-actions .btn {
+    font-size: .72rem;
+    font-weight: 500;
+    letter-spacing: .01em;
+    border-radius: 6px;
+}
+
+body.public-page .public-content .fav-actions .btn-outline-light {
+    color: var(--text-secondary);
+    border-color: var(--border-color);
+}
+
+body.public-page .public-content .fav-actions .btn-outline-light:hover {
+    background: var(--bg-card);
+    border-color: var(--text-secondary);
+    color: var(--text-primary);
+}
+
+body.public-page .public-content .fav-no-progress {
+    font-size: .72rem;
+    color: var(--text-secondary);
+    text-align: center;
+    padding: .25rem 0;
+    opacity: .75;
+}
+
+/* judul halaman ditengah + jarak antar bagian */
+body.public-page .public-content .page-head {
+    text-align: center;
+    margin: 2.5rem 0 1.75rem;
+}
+
+body.public-page .public-content .page-head h1 {
+    margin-bottom: .15rem;
+}
+
+body.public-page .public-content .page-head p {
+    font-family: var(--font-secondary);
+    font-style: italic;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+}
+
+body.public-page .collection-page .collection-head {
+    text-align: center;
+}
+
+body.public-page .collection-page .collection-head h1 {
+    margin-bottom: .15rem;
+}
+
+body.public-page .collection-page .collection-head .badge {
+    font-size: .72rem;
+    letter-spacing: .04em;
+    padding: .35rem .7rem;
+}
+
+body.public-page .collection-page .collection-filters {
+    max-width: 1000px;
+    margin: 0 auto 2rem;
+}
+
+body.public-page .collection-page .collection-filters .row {
+    justify-content: center;
+    row-gap: .75rem;
+}
+
+/* baris filter ditengahkan supaya rapi */
+body.public-page .public-content form[method="GET"] {
+    justify-content: center;
+    row-gap: .75rem;
+}
+
+body.public-page .public-content form[method="GET"] .form-control {
+    min-width: 0;
+}
+
+/* label ikut rata tengah supaya baris filter terlihat seimbang */
+body.public-page .collection-page .collection-filters .form-label {
+    text-align: center;
+}
+
+body.public-auth {
+    --bg-primary: #0c0c0d;
+    --bg-secondary: #151517;
+    --bg-card: #1a1a1d;
+    --border-color: #2a2a2d;
+    --text-primary: #f5f5f0;
+    --text-secondary: #9a9a9e;
+    --accent: #c9a24d;
+    --accent-soft: rgba(201, 162, 77, .15);
+    --danger: #c96a4d;
+    --success: #6fae7c;
+
+    --font-display: 'Cormorant Garamond', serif;
+    --font-secondary: 'DM Sans', sans-serif;
+    --font-body: 'Manrope', sans-serif;
+
+    --bs-body-font-family: var(--font-body);
+    --bs-body-bg: var(--bg-primary);
+    --bs-body-color: var(--text-primary);
+    --bs-border-color: var(--border-color);
+    --bs-secondary-color: var(--text-secondary);
+    --bs-tertiary-bg: var(--bg-secondary);
+    --bs-tertiary-color: var(--text-secondary);
+    --bs-emphasis-color: var(--text-primary);
+    --bs-link-color: var(--accent);
+    --bs-link-hover-color: #dcb75f;
+    --bs-heading-color: var(--text-primary);
+    --bs-secondary-bg: var(--bg-secondary);
+
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    font-family: var(--font-body);
+}
+
+body.public-auth .public-auth-box {
+    width: 100%;
+    max-width: 420px;
+}
+
+/* --- login --- */
+body.public-auth .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, .45);
+}
+
+body.public-auth .card-header {
+    background: transparent;
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.75rem 1.5rem 1.25rem;
+}
+
+body.public-auth .card-header .auth-brand {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    line-height: 1;
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+body.public-auth .card-header .auth-brand:hover {
+    color: var(--accent);
+}
+
+body.public-auth .card-header .auth-brand .bi {
+    font-size: 1.6rem;
+    vertical-align: .15em;
+    margin-right: .35rem;
+    color: var(--accent);
+}
+
+body.public-auth .card-header .auth-subtitle {
+    font-size: .82rem;
+    color: var(--text-secondary);
+    margin-top: .6rem;
+    font-family: var(--font-secondary);
+}
+
+body.public-auth .card-body {
+    padding: 1.5rem;
+}
+
+body.public-auth .form-floating > .form-control,
+body.public-auth .form-control,
+body.public-auth .input-group-text {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+body.public-auth .input-group-text {
+    color: var(--text-secondary);
+}
+
+body.public-auth .form-control:focus {
+    background: var(--bg-secondary);
+    border-color: var(--accent);
+    color: var(--text-primary);
+    box-shadow: 0 0 0 .15rem var(--accent-soft);
+}
+
+body.public-auth .form-control::placeholder {
+    color: var(--text-secondary);
+}
+
+/* form-floating: sembunyikan placeholder bawaan supaya tidak menumpuk dengan label */
+body.public-auth .form-floating > .form-control::placeholder {
+    color: transparent;
+}
+
+/* label floating: gelap, tidak putih seperti bawaan */
+body.public-auth .form-floating > label {
+    color: var(--text-secondary);
+    font-family: var(--font-secondary);
+}
+
+body.public-auth .form-floating > .form-control:focus ~ label,
+body.public-auth .form-floating > .form-control:not(:placeholder-shown) ~ label {
+    color: var(--accent);
+}
+
+/* caret &ikon search di input type=search */
+body.public-auth input[type="search"]::-webkit-search-cancel-button {
+    filter: invert(1) grayscale(1) brightness(1.6);
+}
+
+/* --- tombol --- */
+body.public-auth .btn-primary {
+    --bs-btn-bg: var(--accent);
+    --bs-btn-border-color: var(--accent);
+    --bs-btn-hover-bg: #dcb75f;
+    --bs-btn-hover-border-color: #dcb75f;
+    --bs-btn-active-bg: #b8933f;
+    --bs-btn-active-border-color: #b8933f;
+    --bs-btn-color: #14140f;
+    --bs-btn-hover-color: #14140f;
+    --bs-btn-active-color: #14140f;
+    font-weight: 600;
+}
+
+body.public-auth .btn-outline-primary {
+    --bs-btn-color: var(--accent);
+    --bs-btn-border-color: var(--border-color);
+    --bs-btn-hover-bg: var(--accent-soft);
+    --bs-btn-hover-border-color: var(--accent);
+    --bs-btn-hover-color: var(--accent);
+    --bs-btn-active-bg: var(--accent-soft);
+    --bs-btn-active-border-color: var(--accent);
+    --bs-btn-active-color: var(--accent);
+}
+
+body.public-auth a:not(.btn) {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+body.public-auth a:not(.btn):hover {
+    color: #dcb75f;
+    text-decoration: underline;
+}
+
+/* pemisah "- OR -" */
+body.public-auth .social-auth-links p {
+    color: var(--text-secondary);
+    font-size: .75rem;
+    letter-spacing: .1em;
+    font-family: var(--font-secondary);
+}
+
+/* --- alert --- */
+body.public-auth .alert {
+    border-radius: 8px;
+    font-size: .85rem;
+}
+
+body.public-auth .alert-success {
+    --bs-alert-bg: rgba(111, 174, 124, .12);
+    --bs-alert-color: var(--success);
+    --bs-alert-border-color: rgba(111, 174, 124, .35);
+}
+
+body.public-auth .alert-danger {
+    --bs-alert-bg: rgba(201, 106, 77, .12);
+    --bs-alert-color: #e08a6d;
+    --bs-alert-border-color: rgba(201, 106, 77, .4);
+}
+
+body.public-auth .alert ul {
+    margin-bottom: 0;
+}
+
+body.public-auth .btn-close {
+    filter: invert(1) grayscale(1) brightness(1.8);
+}
+
+body.public-page .public-content .fw-semibold.small {
+    font-family: var(--font-secondary);
+    font-weight: 600;
+    font-size: .95rem;
+    color: var(--text-primary);
+    line-height: 1.3;
+    margin-bottom: 4px;
+}
+
+body.public-page .public-content .card-body .small {
+    font-size: .75rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+/* badge tipe di pojok poster */
+body.public-page .public-content .position-absolute .badge {
+    background: rgba(12, 12, 13, .85);
+    color: var(--accent);
+    border: 1px solid var(--border-color);
+    font-size: .65rem;
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+/* badge jumlah item di header */
+body.public-page .public-content > .public-container > .container-fluid > div > .badge,
+body.public-page .public-content .d-flex > .badge {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid var(--border-color);
+    border-radius: 30px;
+    padding: 6px 16px;
+    font-size: .75rem;
+    font-weight: 500;
+}
+
+/* --- 5. FILTER / SEARCH --------------------------------------------- */
+body.public-page .public-content .card:has(form[method="GET"]) {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+}
+
+body.public-page .public-content form[method="GET"] .form-control,
+body.public-page .public-content form[method="GET"] .form-select,
+body.public-page .public-content form[method="GET"] .input-group-text {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 30px;
+    font-size: .85rem;
+}
+
+body.public-page .public-content form[method="GET"] .form-control::placeholder {
+    color: var(--text-secondary);
+}
+
+body.public-page .public-content form[method="GET"] .form-control:focus,
+body.public-page .public-content form[method="GET"] .form-select:focus {
+    background: var(--bg-secondary);
+    border-color: var(--accent);
+    color: var(--text-primary);
+    box-shadow: none;
+}
+
+body.public-page .public-content form[method="GET"] .btn {
+    border-radius: 30px;
+}
+
+/* --- 6. TOMBOL & BADGE ---------------------------------------------- */
+body.public-page .public-content .btn {
+    border-radius: 30px;
+    font-family: var(--font-body);
+    font-size: .85rem;
+    font-weight: 500;
+    padding: 8px 20px;
+}
+
+body.public-page .public-content .btn-sm {
+    font-size: .78rem;
+    padding: 6px 16px;
+}
+
+body.public-page .public-content .badge {
+    font-weight: 500;
+    border-radius: 20px;
+}
+
+/* --- 7. FORM -------------------------------------------------------- */
+body.public-page .public-content .form-label {
+    font-family: var(--font-secondary);
+    font-size: .72rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+body.public-page .public-content .form-control,
+body.public-page .public-content .form-select {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 30px;
+    color: var(--text-primary);
+    font-size: .85rem;
+}
+
+body.public-page .public-content .form-control:focus,
+body.public-page .public-content .form-select:focus {
+    background: var(--bg-secondary);
+    border-color: var(--accent);
+    color: var(--text-primary);
+    box-shadow: none;
+}
+
+body.public-page .public-content textarea.form-control {
+    border-radius: 10px;
+}
+
+/* tombol favorite */
+body.public-page .public-content .btn-warning,
+body.public-page .public-content .btn-outline-warning {
+    --bs-btn-bg: var(--accent-soft);
+    --bs-btn-color: var(--accent);
+    --bs-btn-border-color: var(--accent);
+    --bs-btn-hover-bg: var(--accent);
+    --bs-btn-hover-color: #14130e;
+    --bs-btn-hover-border-color: var(--accent);
+}
+
+body.public-page .public-content .btn-secondary,
+body.public-page .public-content .btn-outline-secondary {
+    --bs-btn-color: var(--text-secondary);
+    --bs-btn-border-color: var(--border-color);
+    --bs-btn-hover-bg: var(--bg-secondary);
+    --bs-btn-hover-color: var(--text-primary);
+    --bs-btn-hover-border-color: var(--border-color);
+}
+
+/* --- 8. DETAIL PAGE -------------------------------------------------- */
+body.public-page .public-content .detail-meta {
+    background: transparent;
+    border-bottom: 1px solid var(--border-color);
+}
+
+body.public-page .public-content .detail-meta .fw-semibold,
+body.public-page .public-content .detail-synopsis + *,
+body.public-page .public-content h2.fw-semibold {
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    font-size: .8rem;
+}
+
+body.public-page .public-content .detail-meta-value {
+    color: var(--text-primary);
+}
+
+/* judul review di daftar */
+body.public-page .public-content .fw-semibold .bi-person-circle,
+body.public-page .public-content .fw-semibold .bi-shield-lock {
+    color: var(--text-secondary);
+}
+
+/* baris rating di daftar review */
+body.public-page .public-content .small.text-body-secondary {
+    color: var(--text-secondary);
+}
+
+/* --- 9. KONDISI KOSONG ---------------------------------------------- */
+body.public-page .public-content .text-center.text-body-secondary.py-5,
+body.public-page .public-content .card > .card-body.text-center {
+    color: var(--text-secondary);
+    border-color: var(--border-color);
+    background: var(--bg-card);
+}
+
+body.public-page .public-content .text-center.text-body-secondary.py-5 .bi {
+    color: var(--accent);
+}
+
+/* kartu kondisi kosong ditengahkan */
+body.public-page .public-content .empty-state {
+    max-width: 460px;
+    margin-inline: auto;
+}
+
+
+
