@@ -96,7 +96,7 @@ class WatchItemController extends Controller
     {
         $request->validate([
             'status' => 'required|in:Plan to Watch,Watching,Completed',
-            'rating' => 'required|numeric|min:1|max:10',
+            'rating' => 'nullable|numeric|min:1|max:10',
             'review_text' => 'nullable|string',
             'episode_watched' => 'nullable|integer|min:0',
         ]);
@@ -113,12 +113,22 @@ class WatchItemController extends Controller
             }
         }
 
-        $review->fill([
+        $data = [
             'episode_watched' => $request->filled('episode_watched') ? (int) $request->episode_watched : 0,
             'status' => $request->status,
-            'rating' => $request->rating,
-            'review_text' => $request->review_text,
-        ]);
+        ];
+
+        // rating & review_text hanya dikirim form Review; form Progress tidak
+        // mengirimnya supaya progres tidak menimpa rating yang sudah ada
+        if ($request->has('rating')) {
+            $data['rating'] = $request->filled('rating') ? $request->rating : null;
+        }
+
+        if ($request->has('review_text')) {
+            $data['review_text'] = $request->filled('review_text') ? $request->review_text : null;
+        }
+
+        $review->fill($data);
         $review->save();
 
         return back()->with('success', 'Review berhasil disimpan!');

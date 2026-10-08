@@ -5,7 +5,6 @@
 @section('content')
 <div class="container-fluid">
 
-    {{-- Header Action --}}
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
         <a href="{{ route('collection') }}" class="btn btn-outline-secondary btn-sm">
             <i class="bi bi-arrow-left"></i> Back
@@ -22,9 +21,9 @@
         @endauth
     </div>
 
-    {{-- Detail Card --}}
     <div class="card shadow-sm mb-4">
         <div class="card-body">
+
             <div class="row justify-content-center mb-3">
                 <div class="col-6 col-sm-5 col-md-4 col-lg-3">
                     <div class="card shadow-sm overflow-hidden">
@@ -106,104 +105,97 @@
                     </div>
                 @endif
             </div>
+
         </div>
     </div>
 
-    {{-- SECTION FORM TERPISAH (PROGRESS & REVIEW) --}}
     @if($canTrack)
-    <div class="row g-3 mb-4">
-        
-        {{-- FORM 1: QUICK PROGRESS --}}
-        <div class="col-12 col-md-5">
-            <div class="card shadow-sm h-100">
-                <div class="card-header py-2 bg-body-tertiary">
-                    <h3 class="card-title h6 mb-0">Progress</h3>
-                </div>
-                <div class="card-body p-3">
-                    <form method="POST" action="{{ route('watchitem.review', $watchItem->id) }}">
-                        @csrf
-                        
-                        {{-- Hidden inputs agar data review tidak hilang saat update progress --}}
-                        <input type="hidden" name="rating" value="{{ $userReview?->rating }}">
-                        <input type="hidden" name="review_text" value="{{ $userReview?->review_text }}">
+    <div class="card shadow-sm mb-4">
+        <div class="card-header py-2">
+            <h3 class="card-title h6 mb-0"><i class="bi bi-list-check"></i> Your Progress</h3>
+        </div>
 
-                        <div class="mb-2">
-                            <label class="form-label small fw-semibold mb-1" for="progress_status">Status</label>
-                            <select name="status" id="progress_status" class="form-select form-select-sm" required>
-                                <option value="Plan to Watch" {{ old('status', $userReview?->status) === 'Plan to Watch' ? 'selected' : '' }}>Plan to Watch</option>
-                                <option value="Watching" {{ old('status', $userReview?->status) === 'Watching' ? 'selected' : '' }}>Watching</option>
-                                <option value="Completed" {{ old('status', $userReview?->status) === 'Completed' ? 'selected' : '' }}>Completed</option>
-                            </select>
-                        </div>
+        <div class="card-body p-2 p-md-3">
+            <form method="POST" action="{{ route('watchitem.review', $watchItem->id) }}">
+                @csrf
 
-                        <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="progress_episode">Episode Watched</label>
-                            <input type="number" name="episode_watched" id="progress_episode" class="form-control form-control-sm" min="0"
-                                value="{{ old('episode_watched', $userReview?->episode_watched ?? 0) }}">
-                        </div>
+                <div class="row g-2 align-items-end">
+                    <div class="col-12 col-md-5">
+                        <label class="form-label small mb-1" for="status">Status</label>
+                        <select name="status" id="status" class="form-select form-select-sm" required>
+                            <option value="Plan to Watch" {{ old('status', $userReview?->status) === 'Plan to Watch' ? 'selected' : '' }}>Plan to Watch</option>
+                            <option value="Watching" {{ old('status', $userReview?->status) === 'Watching' ? 'selected' : '' }}>Watching</option>
+                            <option value="Completed" {{ old('status', $userReview?->status) === 'Completed' ? 'selected' : '' }}>Completed</option>
+                        </select>
+                    </div>
 
-                        <button type="submit" class="btn btn-outline-primary btn-sm w-100">
-                            <i class="bi bi-check-lg"></i> Update Progress
+                    <div class="col-6 col-md-3">
+                        <label class="form-label small mb-1" for="episode_watched">Episode Watched</label>
+                        <input type="number" name="episode_watched" id="episode_watched" class="form-control form-control-sm" min="0"
+                            value="{{ old('episode_watched', $userReview?->episode_watched ?? 0) }}">
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <button type="submit" class="btn btn-primary btn-sm w-100">
+                            <i class="bi bi-check-lg"></i> Save Progress
                         </button>
-                    </form>
+                    </div>
                 </div>
-            </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header py-2">
+            <h3 class="card-title h6 mb-0"><i class="bi bi-star"></i> {{ $userReview ? 'Update Your Review' : 'Add Your Review' }}</h3>
         </div>
 
-        {{-- FORM 2: WRITE REVIEW & RATING --}}
-        <div class="col-12 col-md-7">
-            <div class="card shadow-sm h-100">
-                <div class="card-header py-2 bg-body-tertiary">
-                    <h3 class="card-title h6 mb-0">Review & Rating</h3>
+        <div class="card-body p-2 p-md-3">
+            <form method="POST" action="{{ route('watchitem.review', $watchItem->id) }}">
+                @csrf
+
+                {{-- field milik form Progress dikirim ulang supaya tidak tertimpa --}}
+                <input type="hidden" name="status" value="{{ $userReview?->status ?? 'Plan to Watch' }}">
+                <input type="hidden" name="episode_watched" value="{{ $userReview?->episode_watched ?? 0 }}">
+
+                <div class="row g-2 align-items-end">
+                    <div class="col-6 col-md-3">
+                        <label class="form-label small mb-1" for="rating">Rating (1-10)</label>
+                        <input type="number" name="rating" id="rating" class="form-control form-control-sm"
+                            min="1" max="10" step="0.1" required
+                            value="{{ old('rating', $userReview?->rating) }}">
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label class="form-label small mb-1" for="review_text">Review</label>
+                        <textarea name="review_text" id="review_text" class="form-control form-control-sm" rows="2">{{ old('review_text', $userReview?->review_text) }}</textarea>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-primary btn-sm w-100">
+                            <i class="bi bi-send"></i> {{ $userReview ? 'Update Review' : 'Submit Review' }}
+                        </button>
+                    </div>
                 </div>
-                <div class="card-body p-3">
-                    <form method="POST" action="{{ route('watchitem.review', $watchItem->id) }}">
-                        @csrf
-
-                        {{-- Hidden inputs agar status & episode tidak ter-reset saat simpan review --}}
-                        <input type="hidden" name="status" value="{{ $userReview?->status ?? 'Completed' }}">
-                        <input type="hidden" name="episode_watched" value="{{ $userReview?->episode_watched ?? 0 }}">
-
-                        <div class="mb-2">
-                            <label class="form-label small fw-semibold mb-1" for="review_rating">Rating (1-10)</label>
-                            <input type="number" name="rating" id="review_rating" class="form-control form-control-sm"
-                                min="1" max="10" step="0.1"
-                                value="{{ old('rating', $userReview?->rating) }}" placeholder="Contoh: 8.5 (Opsional)">
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="review_text">Review</label>
-                            <textarea name="review_text" id="review_text" class="form-control form-control-sm" rows="3" placeholder="Tulis ulasan Anda...">{{ old('review_text', $userReview?->review_text) }}</textarea>
-                        </div>
-
-                        <div class="text-end">
-                            <button type="submit" class="btn btn-primary btn-sm px-3">
-                                <i class="bi bi-send"></i> Submit Review
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            </form>
         </div>
-
     </div>
     @else
         <div class="card shadow-sm mb-4">
             <div class="card-body text-center text-body-secondary">
                 <i class="bi bi-person-circle fs-3 d-block mb-2"></i>
-                <a href="{{ route('login') }}">Login</a> untuk memperbarui status atau menulis review.
+                <a href="{{ route('login') }}">Login</a> untuk menulis review.
             </div>
         </div>
     @endif
 
-    {{-- Reviews List Section --}}
     <div class="card shadow-sm mb-4">
         <div class="card-header">
-            <h3 class="card-title h6 mb-0"><i class="bi bi-chat-left-text"></i> Reviews ({{ $watchItem->reviews->count() }})</h3>
+            <h3 class="card-title"><i class="bi bi-chat-left-text"></i> Reviews ({{ $watchItem->reviews->count() }})</h3>
         </div>
 
         <div class="card-body">
-            {{-- Admin Reviews --}}
+
             @foreach($adminReviews as $review)
                 <div class="card mb-3">
                     <div class="card-body">
@@ -242,7 +234,6 @@
                 </div>
             @endforeach
 
-            {{-- User Reviews (First 3) --}}
             @php $visibleUserReviews = $userReviews->take(3); @endphp
 
             @foreach($visibleUserReviews as $review)
@@ -283,7 +274,6 @@
                 </div>
             @endforeach
 
-            {{-- Hidden User Reviews (>3) --}}
             @if($userReviews->count() > 3)
                 <div id="more-reviews" style="display:none">
                     @foreach($userReviews->skip(3) as $review)
@@ -333,8 +323,10 @@
             @if($watchItem->reviews->isEmpty())
                 <p class="text-body-secondary mb-0">Belum ada review.</p>
             @endif
+
         </div>
     </div>
 
 </div>
+
 @endsection
