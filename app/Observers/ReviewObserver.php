@@ -36,7 +36,7 @@ class ReviewObserver
         $by = $review->user?->username ?? $review->admin?->username ?? '-';
         $url = route('watchitem.detail', $review->watch_items_id);
 
-        $text = "<b>\u{2B50} REVIEW BARU</b>\n"
+        $text = "<b>\u{2B50} REVIEW BARU</b>\n\n"
             . "<b>Judul:</b> ".e($item?->title ?? '-')."\n"
             . "<b>Oleh:</b> ".e($by)."\n"
             . "<b>Status:</b> ".e($review->status)." | <b>Ep:</b> ".(int) $review->episode_watched."\n"
@@ -44,6 +44,9 @@ class ReviewObserver
             . e($review->review_text ?: '(tanpa teks review)')."\n\n"
             . "<a href=\"".e($url)."\">Buka di SCREENED</a>";
 
-        TelegramNotifier::send($text, (int) config('services.telegram.thread_review'));
+        // Mengambil thread ID dari config, default ke 2 jika null/empty
+        $threadId = (int) config('services.telegram.thread_review', 2);
+
+        TelegramNotifier::send($text, $threadId);
     }
 }
