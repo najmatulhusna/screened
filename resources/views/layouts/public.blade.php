@@ -26,7 +26,12 @@
                 @endif
             </a>
 
-            <nav class="nav-menu">
+            <button class="nav-toggle" type="button" aria-label="Buka menu"
+                aria-expanded="false" aria-controls="navLinks">
+                <span></span><span></span><span></span>
+            </button>
+
+            <nav class="nav-menu" id="navLinks">
                 <a href="{{ route('collection') }}"
                     class="{{ request()->routeIs('collection') ? 'active' : '' }}">Collection</a>
 
@@ -85,6 +90,31 @@
     </main>
 
     @include('partials.confirm-modal')
+
+    <script>
+        (function () {
+            var header = document.querySelector('.public-navbar');
+            var toggle = document.querySelector('.nav-toggle');
+            if (!header || !toggle) return;
+
+            function setOpen(open) {
+                header.classList.toggle('nav-open', open);
+                toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            }
+
+            toggle.addEventListener('click', function () {
+                setOpen(!header.classList.contains('nav-open'));
+            });
+
+            header.querySelectorAll('.nav-menu a').forEach(function (link) {
+                link.addEventListener('click', function () { setOpen(false); });
+            });
+
+            window.addEventListener('resize', function () {
+                if (window.innerWidth > 767.98) setOpen(false);
+            });
+        })();
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"></script>

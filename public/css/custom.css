@@ -1066,3 +1066,385 @@ body.public-page .public-content .empty-state {
 
 
 
+
+
+/* =========================================================================
+   RESPONSIVE / MULTI-DEVICE
+   Laptop (>=1200) : tampilan default di atas
+   Tablet  (<=991) : navbar membungkus, jarak dirapatkan
+   Mobile  (<=767) : filter bertumpuk, tombol 2 kolom, padding rapat
+   Small   (<=575) : 1 kolom penuh, font & tap target diperbesar
+   ========================================================================= */
+
+/* ---------- global guard ---------- */
+body.public-page,
+body.public-auth {
+    overflow-x: hidden;
+}
+
+body.public-page .public-content .card,
+body.public-page .public-content .ratio,
+body.public-page .public-content .table-responsive {
+    max-width: 100%;
+}
+
+.table-responsive {
+    -webkit-overflow-scrolling: touch;
+}
+
+
+/* ====================== TABLET (<= 991.98px) ====================== */
+@media (max-width: 991.98px) {
+
+    /* --- navbar: baris 1 = logo + user, baris 2 = menu link --- */
+    body.public-page .public-navbar {
+        padding: 12px 0;
+    }
+
+    body.public-page .public-navbar .public-container {
+        flex-wrap: wrap;
+        gap: 10px 20px;
+    }
+
+    body.public-page .nav-menu {
+        gap: 20px;
+    }
+
+    body.public-page .public-navbar nav.nav-menu {
+        flex: 1 1 100%;
+        order: 3;
+        justify-content: flex-start;
+        gap: 22px;
+        padding-top: 6px;
+        border-top: 1px solid var(--border-color);
+    }
+
+    body.public-page .public-navbar div.nav-menu {
+        margin-left: auto;
+    }
+
+    /* --- konten --- */
+    body.public-page .public-content {
+        padding-bottom: 48px;
+    }
+
+    body.public-page .public-content .page-head {
+        margin: 2rem 0 1.25rem;
+    }
+
+    body.public-page .collection-page .collection-filters {
+        margin-bottom: 1.5rem;
+    }
+
+    /* --- filter: baris lebih lega --- */
+    .app-content form[method="GET"] .col-lg-3 {
+        flex: 1 1 300px;
+    }
+
+    .app-content form[method="GET"] .col-lg-2 {
+        flex: 1 1 150px;
+    }
+
+    .app-content form[method="GET"] .row > div:last-child {
+        flex: 1 1 auto;
+    }
+
+    /* --- statistik / history --- */
+    body.public-page .container:has(.stats-summary) h1 {
+        font-size: clamp(2rem, 6vw, 2.8rem);
+    }
+
+    body.public-page .container:has(.stats-summary) .review-card:hover {
+        transform: none;
+    }
+}
+
+
+/* ====================== MOBILE / SMALL TABLET (<= 767.98px) ====================== */
+@media (max-width: 767.98px) {
+
+    .public-container {
+        padding-inline: 16px;
+    }
+
+    /* --- navbar --- */
+    body.public-page .public-navbar {
+        padding: 10px 0;
+    }
+
+    body.public-page .navbar-brand-logo {
+        font-size: 1.4rem;
+    }
+
+    body.public-page .nav-menu {
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    /* tap target memadai untuk jari */
+    body.public-page .nav-menu a,
+    body.public-page .nav-link-btn {
+        padding: 8px 2px;
+    }
+
+    body.public-page .nav-user {
+        font-size: .75rem;
+        padding: 4px 10px;
+    }
+
+    /* --- judul & jarak --- */
+    body.public-page .public-content .page-head {
+        margin: 1.5rem 0 1rem;
+    }
+
+    body.public-page .public-content .card-body {
+        padding: 12px 12px 14px;
+    }
+
+    body.public-page .public-content .fav-actions {
+        padding: .55rem;
+        gap: .35rem;
+    }
+
+    /* --- filter: search 1 baris, sisanya 2 kolom, tombol 2 kolom --- */
+    .app-content form[method="GET"] {
+        gap: .6rem;
+        row-gap: .7rem;
+    }
+
+    .app-content form[method="GET"] .col-lg-3 {
+        flex: 1 1 100%;
+    }
+
+    .app-content form[method="GET"] .col-lg-2 {
+        flex: 1 1 calc(50% - .3rem);
+    }
+
+    .app-content form[method="GET"] .col-lg-1 {
+        flex: 1 1 calc(50% - .3rem);
+    }
+
+    .app-content form[method="GET"] .row > div:last-child {
+        flex: 1 1 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: .5rem;
+    }
+
+    .app-content form[method="GET"] .form-control,
+    .app-content form[method="GET"] .form-select,
+    .app-content form[method="GET"] .input-group-text {
+        min-height: 42px;
+    }
+
+    /* --- detail: info lebih ringkas --- */
+    body.public-page .public-content .detail-synopsis {
+        font-size: .92rem;
+    }
+
+    /* --- statistik: kartu ringkas --- */
+    body.public-page .container:has(.stats-summary) .stats-summary {
+        gap: .7rem;
+    }
+
+    body.public-page .container:has(.stats-summary) .stats-summary > p {
+        min-height: 92px;
+        padding: .8rem .6rem;
+        font-size: .82rem;
+    }
+
+    body.public-page .container:has(.stats-summary) .review-card {
+        padding: .8rem .85rem;
+    }
+
+    /* --- admin (AdminLTE): kurangi padding konten --- */
+    .app-main .app-content > .container-fluid {
+        padding-inline: 12px;
+    }
+}
+
+
+/* ====================== HP KECIL (<= 575.98px) ====================== */
+@media (max-width: 575.98px) {
+
+    .public-container {
+        padding-inline: 14px;
+    }
+
+    /* --- filter: semua field 1 kolom penuh --- */
+    .app-content form[method="GET"] .col-lg-2,
+    .app-content form[method="GET"] .col-lg-1 {
+        flex: 1 1 100%;
+    }
+
+    /* --- kartu koleksi: 2 kolom tetap, teks tidak meluber --- */
+    body.public-page .public-content .fav-actions .btn {
+        white-space: normal;
+        line-height: 1.2;
+        padding: .35rem .45rem;
+        font-size: .68rem;
+    }
+
+    body.public-page .public-content .fw-semibold.small {
+        font-size: .88rem;
+    }
+
+    /* --- detail --- */
+    body.public-page .public-content h1 {
+        font-size: 1.85rem;
+    }
+
+    body.public-page .public-content .ratio.ratio-poster {
+        --bs-aspect-ratio: 135%;
+    }
+
+    /* form progres & review: tombol selebar layar */
+    body.public-page .public-content .row.g-2 .col-6 .btn.w-100 {
+        min-height: 40px;
+    }
+
+    /* --- statistik --- */
+    body.public-page .container:has(.stats-summary) .stats-summary {
+        grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+    }
+
+    body.public-page .container:has(.stats-summary) h2 {
+        font-size: 1.35rem;
+    }
+
+    /* --- halaman auth (login/register) --- */
+    body.public-auth {
+        padding: 1.25rem .75rem;
+    }
+
+    body.public-auth .card-header {
+        padding: 1.25rem 1rem 1rem;
+    }
+
+    body.public-auth .card-header .auth-brand {
+        font-size: 2rem;
+    }
+
+    body.public-auth .card-body {
+        padding: 1.15rem;
+    }
+}
+
+
+/* ====================== HP LANDSCAPE / LAYAR PENDEK ====================== */
+@media (max-height: 640px) {
+    body.public-auth {
+        align-items: flex-start;
+    }
+}
+
+
+/* =========================================================================
+   HAMBURGER NAVBAR (mobile <= 767px)
+   Desktop/tablet: tombol disembunyikan, menu tampil seperti biasa
+   ========================================================================= */
+
+.nav-toggle {
+    display: none;
+}
+
+@media (max-width: 767.98px) {
+
+    /* --- tombol hamburger --- */
+    .nav-toggle {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        margin-left: auto;
+        padding: 10px 4px;
+        background: none;
+        border: 0;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .nav-toggle span {
+        display: block;
+        width: 24px;
+        height: 2px;
+        border-radius: 2px;
+        background: var(--text-primary);
+        transition: transform .25s ease, opacity .2s ease;
+    }
+
+    .nav-toggle:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 6px;
+    }
+
+    /* --- menu tertutup secara default --- */
+    body.public-page .public-navbar nav.nav-menu,
+    body.public-page .public-navbar div.nav-menu {
+        display: none;
+        flex: 1 1 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        margin-left: 0;
+        padding: 6px 0 4px;
+        border-top: 1px solid var(--border-color);
+    }
+
+    body.public-page .public-navbar nav.nav-menu {
+        order: 3;
+    }
+
+    body.public-page .public-navbar div.nav-menu {
+        order: 4;
+        padding-bottom: 8px;
+    }
+
+    /* --- terbuka saat tombol diklik --- */
+    body.public-page .public-navbar.nav-open nav.nav-menu,
+    body.public-page .public-navbar.nav-open div.nav-menu {
+        display: flex;
+    }
+
+    /* --- item menu: selebar layar, mudah ditap --- */
+    body.public-page .public-navbar .nav-menu a,
+    body.public-page .public-navbar .nav-link-btn {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 11px 2px;
+        font-size: .92rem;
+        border-bottom: 0;
+    }
+
+    body.public-page .public-navbar .nav-menu a:hover,
+    body.public-page .public-navbar .nav-menu a.active,
+    body.public-page .public-navbar .nav-link-btn:hover {
+        border-bottom-color: transparent;
+    }
+
+    body.public-page .public-navbar .nav-menu form {
+        display: block !important;
+        width: 100%;
+        margin: 0;
+    }
+
+    body.public-page .public-navbar .nav-user {
+        align-self: flex-start;
+        margin-top: 6px;
+    }
+
+    /* --- animasi garis menjadi X --- */
+    body.public-page .public-navbar.nav-open .nav-toggle span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+
+    body.public-page .public-navbar.nav-open .nav-toggle span:nth-child(2) {
+        opacity: 0;
+    }
+
+    body.public-page .public-navbar.nav-open .nav-toggle span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+}
