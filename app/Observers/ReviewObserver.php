@@ -44,9 +44,6 @@ class ReviewObserver
             . e($review->review_text ?: '(tanpa teks review)')."\n\n"
             . "<a href=\"".e($url)."\">Buka di SCREENED</a>";
 
-        // Mengambil thread ID dari config, default ke 2 jika null/empty
-        $threadId = (int) config('services.telegram.thread_review', 2);
-
-        TelegramNotifier::send($text, $threadId);
+        TelegramNotifier::send($text, (int) config('services.telegram.thread_review'));
     }
 }
