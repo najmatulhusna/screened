@@ -38,8 +38,10 @@ return [
     'telegram' => [
         'token' => env('TELEGRAM_BOT_TOKEN'),
         'chat_id' => env('TELEGRAM_CHAT_ID'),
-        'thread_error' => env('TELEGRAM_THREAD_ERROR'),
-        'thread_review' => env('TELEGRAM_THREAD_REVIEW'),
+        // Default ID topic forum Telegram (3=Error, 2=Review) supaya notifikasi
+        // tetap masuk ke topic yang benar saat env belum di-set di server.
+        'thread_error' => (int) (env('TELEGRAM_THREAD_ERROR') ?: 3),
+        'thread_review' => (int) (env('TELEGRAM_THREAD_REVIEW') ?: 2),
     ],
 
 ];

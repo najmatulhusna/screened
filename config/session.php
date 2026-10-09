@@ -18,7 +18,9 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'database'),
+    // "cookie" (session disimpan di cookie terenkripsi) agar tetap persist
+    // di server dengan filesystem/database sementara seperti Wasmer Edge.
+    'driver' => env('SESSION_DRIVER', 'cookie'),
 
     /*
     |--------------------------------------------------------------------------

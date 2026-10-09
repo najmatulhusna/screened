@@ -22,5 +22,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Review::observe(ReviewObserver::class);
+
+        // Paksa session berbasis cookie di luar local. Filesystem & database di
+        // Wasmer Edge tidak persist antar request sehingga session berbasis
+        // file/database gagal memvalidasi token CSRF -> 419 Page Expired.
+        if (!app()->isLocal()) {
+            config(['session.driver' => 'cookie']);
+        }
     }
 }
