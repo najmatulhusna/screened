@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Log;
 
 class TelegramNotifier
 {
+    /**
+     * Kirim pesan notifikasi ke Telegram Supergroup / Topic.
+     */
     public static function send(string $text, ?int $threadId = null): bool
     {
         $token = config('services.telegram.token');
@@ -17,11 +20,14 @@ class TelegramNotifier
             return false;
         }
 
-        if ($threadId) {
+        // Pastikan thread ID valid (integer positif)
+        $hasValidThread = !is_null($threadId) && $threadId > 0;
+
+        if ($hasValidThread) {
             $text .= "\n\n<i>— thread {$threadId}</i>";
         } else {
-            $text .= "\n\n<i>⚠ THREAD KOSONG: config services.telegram.thread_* tidak terbaca, pesan masuk General</i>";
-            Log::warning('Telegram: thread_id kosong (config thread_error/review tidak terbaca) -> pesan masuk General');
+            $text .= "\n\n<i>⚠ THREAD KOSONG: config services.telegram.thread_* tidak terbaca atau ber-nilai 0, pesan masuk General</i>";
+            Log::warning('Telegram: thread_id kosong/invalid -> pesan masuk ke General');
         }
 
         $payload = [
@@ -31,7 +37,8 @@ class TelegramNotifier
             'disable_web_page_preview' => true,
         ];
 
-        if ($threadId) {
+        // Hanya tambahkan message_thread_id jika bernilai positif
+        if ($hasValidThread) {
             $payload['message_thread_id'] = $threadId;
         }
 
@@ -41,7 +48,7 @@ class TelegramNotifier
 
             if (!$response->successful()) {
                 Log::error('Telegram API HTTP '.$response->status().': '.mb_substr($response->body(), 0, 500));
-                self::report($token, $chatId, $threadId, $response->status(), $response->body());
+                self::report($token, $chatId, $hasValidThread ? $threadId : null, $response->status(), $response->body());
             }
 
             return $response->successful();
@@ -52,9 +59,8 @@ class TelegramNotifier
     }
 
     /**
-     * Laporkan kegagalan kirim ke chat (tanpa message_thread_id) supaya
-     * error API Telegram langsung terlihat, bukan hanya di log yang
-     * hilang tiap request di Wasmer.
+     * Laporkan kegagalan kirim ke chat utama (tanpa message_thread_id) agar
+     * error API Telegram langsung terlihat.
      */
     private static function report(string $token, string $chatId, ?int $threadId, int $status, string $body): void
     {
@@ -63,7 +69,7 @@ class TelegramNotifier
 
         $text = "❌ <b>Kirim notifikasi Telegram gagal</b>\n\n"
             . "<b>HTTP:</b> {$status}\n"
-            . '<b>Thread:</b> '.($threadId ?: '(kosong)')."\n"
+            . '<b>Thread:</b> '.($threadId ?: '(kosong/invalid)')."\n"
             . '<b>Alasan:</b> <pre>'.e(mb_substr((string) $desc, 0, 500)).'</pre>';
 
         try {
