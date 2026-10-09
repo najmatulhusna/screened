@@ -38,10 +38,10 @@ return [
     'telegram' => [
         'token' => env('TELEGRAM_BOT_TOKEN'),
         'chat_id' => env('TELEGRAM_CHAT_ID'),
-        // Default ID topic forum Telegram (3=Error, 2=Review) supaya notifikasi
-        // tetap masuk ke topic yang benar saat env belum di-set di server.
-        'thread_error' => (int) (env('TELEGRAM_THREAD_ERROR') ?: 3),
-        'thread_review' => (int) (env('TELEGRAM_THREAD_REVIEW') ?: 2),
+        // ID topic forum Telegram: ambil angka saja dari env (toleran kutip/spasi),
+        // fallback 3=Error, 2=Review supaya pesan tidak jatuh ke General.
+        'thread_error' => (int) (preg_replace('/\D+/', '', (string) env('TELEGRAM_THREAD_ERROR')) ?: 3),
+        'thread_review' => (int) (preg_replace('/\D+/', '', (string) env('TELEGRAM_THREAD_REVIEW')) ?: 2),
     ],
 
 ];
