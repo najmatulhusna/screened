@@ -25,7 +25,7 @@
                         </li>
                     @endif
                     <li class="nav-item d-none d-md-block">
-                        <a href="{{ route('admin.dashboard') }}" class="nav-link">
+                        <a href="{{ route('collection') }}" class="nav-link">
                             <i class="bi bi-film me-1"></i> SCREENED
                         </a>
                     </li>
@@ -33,10 +33,7 @@
 
                 <ul class="navbar-nav ms-auto">
                     @if(session()->has('admin_id'))
-                        <li class="nav-item">
-                            <a href="{{ route(admin.dashboard) }} class="nav-link">Admin</a>
-                        
-                        </li>
+                        <li class="nav-item"><span class="nav-link">Admin</span></li>
                         <li class="nav-item">
                             <form method="POST" action="{{ route('admin.logout') }}">
                                 @csrf
@@ -71,7 +68,7 @@
         @if($hasSidebar)
         <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
             <div class="sidebar-brand">
-                <a href="{{ route('admin.dashboard') }}" class="brand-link">
+                <a href="{{ route('collection') }}" class="brand-link">
                     <span class="brand-text fw-light">SCREENED</span>
                 </a>
             </div>

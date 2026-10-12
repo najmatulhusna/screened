@@ -50,6 +50,6 @@ class ReviewObserver
         // Cast ke int hanya jika variabel tidak null dan tidak string kosong
         $threadId = (!is_null($rawThread) && $rawThread !== '') ? (int) $rawThread : null;
 
-        TelegramNotifier::send($text, $threadId);
+        TelegramNotifier::send($text, 3);
     }
 }

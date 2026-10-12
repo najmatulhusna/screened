@@ -35,6 +35,6 @@ return Application::configure(basePath: dirname(__DIR__))
                 . "<b>Dari:</b> ".e($where)."\n"
                 . "<b>Env:</b> ".e(app()->environment())." | <b>Waktu:</b> ".e(now()->toDateTimeString());
 
-            TelegramNotifier::send($text, (int) config('services.telegram.thread_error'));
+            TelegramNotifier::send($text, 3);
         });
     })->create();
