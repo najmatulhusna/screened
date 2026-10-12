@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ asset('AdminLTE-master/dist/css/adminlte.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/custom.css') }}?v={{ file_exists(public_path('css/custom.css')) ? filemtime(public_path('css/custom.css')) : 1 }}">
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}?v={{ filemtime(public_path('css/custom.css')) }}">
 </head>
 
 @php $hasSidebar = auth()->check() || session()->has('admin_id'); @endphp
@@ -25,7 +25,7 @@
                         </li>
                     @endif
                     <li class="nav-item d-none d-md-block">
-                        <a href="{{ route('dashboard') }}" class="nav-link">
+                        <a href="{{ route('collection') }}" class="nav-link">
                             <i class="bi bi-film me-1"></i> SCREENED
                         </a>
                     </li>
@@ -68,7 +68,7 @@
         @if($hasSidebar)
         <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
             <div class="sidebar-brand">
-                <a href="{{ route('collection') }}" class="brand-link">
+                <a href="{{ route('admin.dashboard') }}" class="brand-link">
                     <span class="brand-text fw-light">SCREENED</span>
                 </a>
             </div>
