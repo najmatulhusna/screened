@@ -38,10 +38,7 @@ return [
     'telegram' => [
         'token' => env('TELEGRAM_BOT_TOKEN'),
         'chat_id' => env('TELEGRAM_CHAT_ID'),
-        // ID topic forum Telegram: ambil angka saja dari env (toleran kutip/spasi),
-        // fallback 3=Error, 2=Review supaya pesan tidak jatuh ke General.
-        'thread_error' => (int) (preg_replace('/\D+/', '', (string) env('TELEGRAM_THREAD_ERROR')) ?: 3),
-        'thread_review' => (int) (preg_replace('/\D+/', '', (string) env('TELEGRAM_THREAD_REVIEW')) ?: 2),
+        'thread_error' => env('TELEGRAM_THREAD_ERROR'),
+        'thread_review' => env('TELEGRAM_THREAD_REVIEW'),
     ],
-
 ];
