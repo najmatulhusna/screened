@@ -33,7 +33,10 @@
 
                 <ul class="navbar-nav ms-auto">
                     @if(session()->has('admin_id'))
-                        <li class="nav-item"><span class="nav-link">Admin</span></li>
+                        <li class="nav-item">
+                            <a href="{{ route(admin.dashboard) }} class="nav-link">Admin</a>
+                        
+                        </li>
                         <li class="nav-item">
                             <form method="POST" action="{{ route('admin.logout') }}">
                                 @csrf
