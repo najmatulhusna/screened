@@ -73,16 +73,6 @@
             </div>
         </form>
 
-        <div class="social-auth-links text-center mb-0 mt-3 d-grid gap-2">
-            <p class="mb-0">- OR -</p>
-            <a href="{{ route('admin.register') }}" class="btn btn-outline-dark">
-                <i class="bi bi-person-plus me-2"></i> Daftar Admin
-            </a>
-            <a href="{{ route('login') }}" class="btn btn-outline-secondary">
-                <i class="bi bi-people me-2"></i> Login sebagai User
-            </a>
-        </div>
-
         <p class="mb-0 mt-3 text-center">
             <a href="{{ route('collection') }}">Kembali ke Collection</a>
         </p>
