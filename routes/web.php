@@ -42,3 +42,9 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::put('/edit/{id}', [AdminController::class, 'update'])->name('update');
     Route::delete('/delete/{id}', [AdminController::class, 'destroy'])->name('destroy');
 });
+
+Route::get('/_tg-debug', fn () => [
+    'review' => config('services.telegram.thread_review'),
+    'error' => config('services.telegram.thread_error'),
+    'token_set' => (bool) config('services.telegram.token'),
+]);

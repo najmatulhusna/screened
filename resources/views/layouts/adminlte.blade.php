@@ -25,7 +25,7 @@
                         </li>
                     @endif
                     <li class="nav-item d-none d-md-block">
-                        <a href="{{ route('collection') }}" class="nav-link">
+                        <a href="{{ route('dashboard') }}" class="nav-link">
                             <i class="bi bi-film me-1"></i> SCREENED
                         </a>
                     </li>
