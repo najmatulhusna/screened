@@ -143,6 +143,7 @@ class AdminController extends Controller
             'type' => 'required|in:Movie,Drama,Series,Tv Show',
             'release_year' => 'required|integer',
             'genre' => 'required',
+            'poster' => 'nullable|image|max:2048',
         ]);
 
         $data = $request->only(['title','type','release_year','genre','country','director_creator','cast_list','synopsis','duration','total_episodes']);

@@ -1,0 +1,7 @@
+[package]
+name = "screened"
+version = "1.0.0"
+private = true
+
+[fs]
+"/app/storage" = "storage"
