@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('director_creator', 150)->nullable();
             $table->text('cast_list')->nullable();
             $table->text('synopsis')->nullable();
-            $table->text('poster')->nullable();
+            $table->longtext('poster')->nullable();
             $table->integer('duration')->nullable();
             $table->integer('total_episodes')->nullable();
             $table->decimal('rating', 3, 1)->nullable();
