@@ -94,24 +94,4 @@ class AuthController extends Controller
         session()->forget('admin_id');
         return redirect()->route('admin.login');
     }
-
-    public function showAdminRegister()
-    {
-        return view('auth.admin-register');
-    }
-
-    public function adminRegister(Request $request)
-    {
-        $request->validate([
-            'username' => 'required|unique:admin|max:50',
-            'password' => 'required|min:6|confirmed',
-        ]);
-
-        Admin::create([
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-        ]);
-
-        return redirect()->route('admin.login')->with('success', 'Akun admin berhasil dibuat! Silakan login.');
-    }
 }

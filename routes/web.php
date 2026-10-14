@@ -27,8 +27,6 @@ Route::delete('/watchitem/{id}/progress', [WatchItemController::class, 'destroyP
 Route::get('/admin/login', [AuthController::class, 'showAdminLogin'])->name('admin.login');
 Route::post('/admin/login', [AuthController::class, 'adminLogin']);
 Route::post('/admin/logout', [AuthController::class, 'adminLogout'])->name('admin.logout');
-Route::get('/admin/register', [AuthController::class, 'showAdminRegister'])->name('admin.register');
-Route::post('/admin/register', [AuthController::class, 'adminRegister']);
 
 // Admin Panel (protected by admin middleware)
 Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
