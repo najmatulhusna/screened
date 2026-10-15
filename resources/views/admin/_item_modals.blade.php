@@ -1,8 +1,7 @@
 {{-- Modal Add New Item --}}
 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
-        <div class="modal-content">
-            <form method="POST" action="{{ route('admin.store') }}" enctype="multipart/form-data" id="addItemForm">
+            <form class="modal-content" method="POST" action="{{ route('admin.store') }}" enctype="multipart/form-data" id="addItemForm">
                 @csrf
                 <input type="hidden" name="_open_modal" value="add">
 
@@ -174,15 +173,13 @@
                     </button>
                 </div>
             </form>
-        </div>
     </div>
 </div>
 
 {{-- Modal Edit Item --}}
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
-        <div class="modal-content">
-            <form method="POST" action="" enctype="multipart/form-data" id="editItemForm"
+            <form class="modal-content" method="POST" action="" enctype="multipart/form-data" id="editItemForm"
                 data-action-template="{{ route('admin.update', '__ID__') }}">
                 @csrf
                 @method('PUT')
@@ -357,6 +354,5 @@
                     </button>
                 </div>
             </form>
-        </div>
     </div>
 </div>
