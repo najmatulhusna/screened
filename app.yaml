@@ -20,5 +20,18 @@ capabilities:
   database:
     engine: mysql
 
+# Volume hanya tersedia di region tertentu, jadi app dipin ke fr-roub1
+# (region default database Wasmer) supaya volume bisa dimount.
+locality:
+  regions:
+    - fr-roub1
+
+# Volume persisten untuk poster (muncul di tab Storage dashboard Wasmer).
+# Mount langsung ke docroot supaya PHP built-in server menyajikan file
+# sebagai file statis tanpa perlu symlink public/storage.
+volumes:
+  - name: posters
+    mount: /app/public/storage
+
 scaling:
   mode: single_concurrency

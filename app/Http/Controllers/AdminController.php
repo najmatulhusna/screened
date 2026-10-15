@@ -105,8 +105,7 @@ class AdminController extends Controller
         $data = $request->only(['title','type','release_year','genre','country','director_creator','cast_list','synopsis','duration','total_episodes']);
 
         if ($request->hasFile('poster')) {
-            $file = $request->file('poster');
-            $data['poster'] = 'data:' . $file->getMimeType() . ';base64,' . base64_encode(file_get_contents($file->getRealPath()));
+            $data['poster'] = $request->file('poster')->store('posters', 'public');
         }
 
         $watchItem = WatchItem::create($data);
@@ -150,8 +149,7 @@ class AdminController extends Controller
         $data = $request->only(['title','type','release_year','genre','country','director_creator','cast_list','synopsis','duration','total_episodes']);
 
         if ($request->hasFile('poster')) {
-            $file = $request->file('poster');
-            $data['poster'] = 'data:' . $file->getMimeType() . ';base64,' . base64_encode(file_get_contents($file->getRealPath()));
+            $data['poster'] = $request->file('poster')->store('posters', 'public');
         }
 
         $watchItem->update($data);
