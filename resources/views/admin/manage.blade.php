@@ -95,7 +95,7 @@
         $('#edit_synopsis').val(d.synopsis || '');
         $('#edit_status').val(d.status || 'Plan to Watch');
         $('#edit_episode_watched').val(d.episode_watched ?? 0);
-        $('#edit_rating').val(d.rating ?? '');
+        $('#edit_rating').val(d.review_rating ?? '');
         $('#edit_review_text').val(d.review_text || '');
         $('#edit_poster').val('');
 
@@ -164,6 +164,7 @@
         var which = oldData._open_modal || 'add';
 
         if (which === 'edit' && oldData.id) {
+            oldData.review_rating = oldData.rating ?? '';
             fillEditModal(oldData, oldData.id);
             bootstrap.Modal.getOrCreateInstance(document.getElementById('editModal')).show();
         } else {

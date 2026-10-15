@@ -197,6 +197,7 @@ class AdminController extends Controller
                 'synopsis' => $item->synopsis,
                 'poster' => $item->poster ? asset('storage/' . $item->poster) : null,
                 'rating' => $item->rating,
+                'review_rating' => $adminReview->rating ?? '',
                 'status' => $adminReview->status ?? 'Plan to Watch',
                 'episode_watched' => $adminReview->episode_watched ?? 0,
                 'review_text' => $adminReview->review_text ?? '',
