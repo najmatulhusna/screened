@@ -6,7 +6,7 @@
 
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
         <h1 class="h4 mb-0">Admin Dashboard</h1>
-        <a href="{{ route('admin.add') }}" class="btn btn-primary btn-sm">
+        <a href="{{ route('admin.manage') }}" class="btn btn-primary btn-sm">
             <i class="bi bi-plus-lg"></i> Add New Item
         </a>
     </div>

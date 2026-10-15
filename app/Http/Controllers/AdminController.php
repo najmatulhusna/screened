@@ -179,13 +179,28 @@ class AdminController extends Controller
     public function apiIndex()
     {
         $watchItems = WatchItem::all()->map(function ($item) {
+            $adminReview = $item->reviews()
+                ->where('admin_id', session('admin_id'))
+                ->first();
+
             return [
+                'id' => $item->id,
                 'title' => $item->title,
                 'type' => $item->type,
                 'release_year' => $item->release_year,
                 'genre' => $item->genre,
-                'rating' => $item->rating ?? '-',
-                'action' => '<a href="' . route('admin.edit', $item->id) . '">Edit</a>'
+                'country' => $item->country,
+                'director_creator' => $item->director_creator,
+                'cast_list' => $item->cast_list,
+                'duration' => $item->duration,
+                'total_episodes' => $item->total_episodes,
+                'synopsis' => $item->synopsis,
+                'poster' => $item->poster ? asset('storage/' . $item->poster) : null,
+                'rating' => $item->rating,
+                'status' => $adminReview->status ?? 'Plan to Watch',
+                'episode_watched' => $adminReview->episode_watched ?? 0,
+                'review_text' => $adminReview->review_text ?? '',
+                'action' => '<button type="button" class="btn-edit" data-id="' . $item->id . '">Edit</button>'
                     . ' <form method="POST" action="' . route('admin.destroy', $item->id) . '" style="display:inline">'
                     . csrf_field() . method_field('DELETE')
                     . '<button type="submit" onclick="return confirm(\'Yakin hapus?\')">Hapus</button>'

@@ -6,9 +6,9 @@
 
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
         <h1 class="h3 mb-0">Manage Items</h1>
-        <a href="{{ route('admin.add') }}" class="btn btn-primary btn-sm">
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addModal">
             <i class="bi bi-plus-circle"></i> Add New
-        </a>
+        </button>
     </div>
 
     <div class="card">
@@ -37,6 +37,8 @@
 
 </div>
 
+@include('admin._item_modals')
+
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 <style>
     .dataTables_wrapper { width: 100% !important; }
@@ -47,7 +49,7 @@
     }
 
     /* action buttons come from AdminController::apiIndex() */
-    #manageTable td:last-child a {
+    #manageTable td:last-child .btn-edit {
         display: inline-block;
         padding: .25rem .5rem;
         font-size: .75rem;
@@ -57,8 +59,9 @@
         background-color: #0d6efd;
         border: 1px solid #0d6efd;
         border-radius: .25rem;
+        cursor: pointer;
     }
-    #manageTable td:last-child button {
+    #manageTable td:last-child form button {
         padding: .25rem .5rem;
         font-size: .75rem;
         line-height: 1.2;
@@ -74,8 +77,39 @@
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <script>
+    function fillEditModal(d, id) {
+        d = d || {};
+        var form = document.getElementById('editItemForm');
+        form.setAttribute('action', form.dataset.actionTemplate.replace('__ID__', id));
+
+        $('#edit_id').val(id);
+        $('#edit_title').val(d.title || '');
+        $('#edit_type').val(d.type || 'Movie');
+        $('#edit_release_year').val(d.release_year || '');
+        $('#edit_genre').val(d.genre || '');
+        $('#edit_country').val(d.country || '');
+        $('#edit_director_creator').val(d.director_creator || '');
+        $('#edit_cast_list').val(d.cast_list || '');
+        $('#edit_duration').val(d.duration || '');
+        $('#edit_total_episodes').val(d.total_episodes || '');
+        $('#edit_synopsis').val(d.synopsis || '');
+        $('#edit_status').val(d.status || 'Plan to Watch');
+        $('#edit_episode_watched').val(d.episode_watched ?? 0);
+        $('#edit_rating').val(d.rating ?? '');
+        $('#edit_review_text').val(d.review_text || '');
+        $('#edit_poster').val('');
+
+        if (d.poster) {
+            $('#edit_poster_preview').attr('src', d.poster).removeClass('d-none');
+            $('#edit_poster_none').addClass('d-none');
+        } else {
+            $('#edit_poster_preview').addClass('d-none');
+            $('#edit_poster_none').removeClass('d-none');
+        }
+    }
+
     $(document).ready(function() {
-        $('#manageTable').DataTable({
+        var table = $('#manageTable').DataTable({
             ajax: '{{ route("admin.api.items") }}',
             ordering: true,
             order: [[1, 'asc']],
@@ -85,7 +119,13 @@
                 { data: 'type', orderable: false },
                 { data: 'release_year', orderable: false },
                 { data: 'genre', orderable: false },
-                { data: 'rating', orderable: false },
+                {
+                    data: 'rating',
+                    orderable: false,
+                    render: function(data) {
+                        return (data === null || data === '') ? '-' : data;
+                    }
+                },
                 { data: 'action', orderable: false, searchable: false }
             ],
             pageLength: 10,
@@ -110,7 +150,27 @@
                 }
             }
         });
+
+        $('#manageTable tbody').on('click', '.btn-edit', function() {
+            var row = table.row($(this).closest('tr')).data();
+            fillEditModal(row, $(this).data('id'));
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('editModal')).show();
+        });
     });
+
+    @if($errors->any())
+    (function() {
+        var oldData = @json(old());
+        var which = oldData._open_modal || 'add';
+
+        if (which === 'edit' && oldData.id) {
+            fillEditModal(oldData, oldData.id);
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('editModal')).show();
+        } else {
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('addModal')).show();
+        }
+    })();
+    @endif
 </script>
 
 @endsection
