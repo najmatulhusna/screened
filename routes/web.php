@@ -3,11 +3,25 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WatchItemController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\WatchController;
+use App\Http\Controllers\PaymentController;
 
 // Collection
 Route::get('/', [WatchItemController::class, 'index'])->name('collection');
 Route::get('/watchitem/{id}', [WatchItemController::class, 'detail'])->name('watchitem.detail');
 Route::post('/watchitem/{id}/review', [WatchItemController::class, 'storeReview'])->name('watchitem.review');
+
+// Streaming (wajib login; akses VIP/preview diatur di dalam controller)
+Route::get('/watch/{id}/{ep?}', [WatchController::class, 'show'])
+    ->whereNumber('id')->whereNumber('ep')
+    ->middleware('auth')
+    ->name('watch');
+
+// Payment (Midtrans)
+Route::post('/checkout', [PaymentController::class, 'checkout'])->middleware('auth')->name('checkout');
+Route::get('/payment/status/{orderId}', [PaymentController::class, 'status'])->middleware('auth')->name('payment.status');
+Route::post('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
+Route::get('/payment/done', [PaymentController::class, 'done'])->name('payment.done');
 
 // Auth User
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -29,6 +43,9 @@ Route::post('/admin/login', [AuthController::class, 'adminLogin']);
 Route::post('/admin/logout', [AuthController::class, 'adminLogout'])->name('admin.logout');
 
 // Admin Panel (protected by admin middleware)
+use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\Admin\SettingsController;
+
 Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/manage', [AdminController::class, 'manage'])->name('manage');
@@ -39,6 +56,11 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/edit/{id}', [AdminController::class, 'edit'])->name('edit');
     Route::put('/edit/{id}', [AdminController::class, 'update'])->name('update');
     Route::delete('/delete/{id}', [AdminController::class, 'destroy'])->name('destroy');
+
+    // Transaksi & pengaturan VIP
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions');
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
+    Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
 });
 
 Route::get('/_tg-debug', fn () => [

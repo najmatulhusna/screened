@@ -123,6 +123,36 @@
                         </div>
                     </div>
 
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="bi bi-link-45deg"></i> Streaming &amp; Trailer</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+
+                                <div class="col-12">
+                                    <label class="form-label" for="add_trailer_url">Trailer URL</label>
+                                    <input type="text" name="trailer_url" id="add_trailer_url"
+                                        class="form-control @error('trailer_url') is-invalid @enderror"
+                                        value="{{ old('trailer_url') }}"
+                                        placeholder="https://www.youtube.com/watch?v=... atau link video trailer">
+                                    @error('trailer_url')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label">Stream Links (per episode)</label>
+                                    @include('admin._stream_links_box')
+                                    <div class="form-text">
+                                        Movie: 1 link (URL Film). Serial: isi per nomor episode (Ep 1, Ep 2, ...).
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="bi bi-star"></i> Your Review</h3>
@@ -299,6 +329,36 @@
                                         <img id="edit_poster_preview" src="" alt="Poster"
                                             class="img-thumbnail d-none" style="max-height: 250px; width: auto;">
                                         <div id="edit_poster_none" class="text-body-secondary fst-italic py-3 d-none">Belum ada poster.</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="bi bi-link-45deg"></i> Streaming &amp; Trailer</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+
+                                <div class="col-12">
+                                    <label class="form-label" for="edit_trailer_url">Trailer URL</label>
+                                    <input type="text" name="trailer_url" id="edit_trailer_url"
+                                        class="form-control @error('trailer_url') is-invalid @enderror"
+                                        placeholder="https://www.youtube.com/watch?v=... atau link video trailer">
+                                    @error('trailer_url')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label">Stream Links (per episode)</label>
+                                    <div class="stream-links-box" id="edit_stream_links"
+                                        data-stream-links data-existing="{}"></div>
+                                    <div class="form-text">
+                                        Movie: 1 link (URL Film). Serial: isi per nomor episode (Ep 1, Ep 2, ...).
                                     </div>
                                 </div>
 

@@ -103,6 +103,18 @@
                                     <p>Add New</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.transactions') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-receipt"></i>
+                                    <p>Transaksi</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.settings') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-gear"></i>
+                                    <p>Pengaturan</p>
+                                </a>
+                            </li>
                         @else
                             @auth
                                 <li class="nav-item">

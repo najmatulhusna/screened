@@ -100,15 +100,21 @@ class AdminController extends Controller
             'release_year' => 'required|integer',
             'genre' => 'required',
             'poster' => 'nullable|image|mimes:jpeg,png,jpg|max:500',
+            'trailer_url' => 'nullable|string|max:2000',
+            'stream_links' => 'nullable|array',
+            'stream_links.*.episode_number' => 'required|integer|min:0',
+            'stream_links.*.url' => 'nullable|string|max:2000',
         ]);
 
-        $data = $request->only(['title','type','release_year','genre','country','director_creator','cast_list','synopsis','duration','total_episodes']);
+        $data = $request->only(['title','type','release_year','genre','country','director_creator','cast_list','synopsis','trailer_url','duration','total_episodes']);
 
         if ($request->hasFile('poster')) {
             $data['poster'] = $request->file('poster')->store('posters', 'public');
         }
 
         $watchItem = WatchItem::create($data);
+
+        $this->syncStreamLinks($watchItem, $request);
 
         Review::create([
             'watch_items_id' => $watchItem->id,
@@ -131,7 +137,13 @@ class AdminController extends Controller
             ->where('admin_id', session('admin_id'))
             ->first();
 
-        return view('admin.edit', compact('watchItem', 'adminReview'));
+        // map stream link: {episode_number: url}
+        $streamLinksMap = $watchItem->streamLinks()
+            ->get()
+            ->mapWithKeys(fn ($link) => [$link->episode_number => $link->url])
+            ->all();
+
+        return view('admin.edit', compact('watchItem', 'adminReview', 'streamLinksMap'));
     }
 
     public function update(Request $request, $id)
@@ -144,15 +156,21 @@ class AdminController extends Controller
             'release_year' => 'required|integer',
             'genre' => 'required',
             'poster' => 'nullable|image|mimes:jpeg,png,jpg|max:500',
+            'trailer_url' => 'nullable|string|max:2000',
+            'stream_links' => 'nullable|array',
+            'stream_links.*.episode_number' => 'required|integer|min:0',
+            'stream_links.*.url' => 'nullable|string|max:2000',
         ]);
 
-        $data = $request->only(['title','type','release_year','genre','country','director_creator','cast_list','synopsis','duration','total_episodes']);
+        $data = $request->only(['title','type','release_year','genre','country','director_creator','cast_list','synopsis','trailer_url','duration','total_episodes']);
 
         if ($request->hasFile('poster')) {
             $data['poster'] = $request->file('poster')->store('posters', 'public');
         }
 
         $watchItem->update($data);
+
+        $this->syncStreamLinks($watchItem, $request);
 
         Review::updateOrCreate(
             [
@@ -168,6 +186,42 @@ class AdminController extends Controller
         );
 
         return redirect('/admin/manage')->with('success', 'Item berhasil diupdate!');
+    }
+
+    /**
+     * Sinkronkan input stream_links dari form ke tabel stream_links.
+     * - URL kosong / baris hilang -> link episode dihapus
+     * - form yang tidak mengirim stream_links (mis. JS mati) -> data lama dipertahankan
+     */
+    private function syncStreamLinks(WatchItem $watchItem, Request $request): void
+    {
+        if (!$request->has('stream_links') || !is_array($request->stream_links)) {
+            return;
+        }
+
+        $keep = [];
+
+        foreach ($request->stream_links as $row) {
+            $episode = (int) ($row['episode_number'] ?? -1);
+            $url = trim((string) ($row['url'] ?? ''));
+
+            if ($episode < 0 || $url === '') {
+                continue;
+            }
+
+            $keep[$episode] = $url;
+        }
+
+        $watchItem->streamLinks()
+            ->whereNotIn('episode_number', array_keys($keep))
+            ->delete();
+
+        foreach ($keep as $episode => $url) {
+            $watchItem->streamLinks()->updateOrCreate(
+                ['episode_number' => $episode],
+                ['url' => $url]
+            );
+        }
     }
 
     public function destroy($id)
@@ -196,6 +250,11 @@ class AdminController extends Controller
                 'total_episodes' => $item->total_episodes,
                 'synopsis' => $item->synopsis,
                 'poster' => $item->poster ? asset('storage/' . $item->poster) : null,
+                'trailer_url' => $item->trailer_url,
+                'stream_links' => $item->streamLinks()
+                    ->get()
+                    ->mapWithKeys(fn ($link) => [$link->episode_number => $link->url])
+                    ->all(),
                 'rating' => $item->rating,
                 'review_rating' => $adminReview->rating ?? '',
                 'status' => $adminReview->status ?? 'Plan to Watch',

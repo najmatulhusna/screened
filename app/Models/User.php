@@ -24,6 +24,7 @@ class User extends Authenticatable
         'email',
         'password',
         'data',
+        'vip_until',
     ];
 
     /**
@@ -46,12 +47,35 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'vip_until' => 'datetime',
         ];
     }
     
     public function reviews()
     {
         return $this->hasMany(Review::class, 'users_id');
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'users_id');
+    }
+
+    /** Status VIP aktif (masa berlaku belum lewat). */
+    public function isVip(): bool
+    {
+        return $this->vip_until !== null && $this->vip_until->isFuture();
+    }
+
+    /** Tambah masa aktif VIP dari sekarang atau dari expiry lama jika masih berlaku. */
+    public function extendVip(int $days): void
+    {
+        $base = $this->vip_until && $this->vip_until->isFuture()
+            ? $this->vip_until->copy()
+            : now();
+
+        $this->vip_until = $base->addDays($days);
+        $this->save();
     }
 
 }

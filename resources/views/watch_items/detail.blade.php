@@ -5,10 +5,18 @@
 @section('content')
 <div class="container-fluid">
 
-    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-        <a href="{{ route('collection') }}" class="btn btn-outline-secondary btn-sm">
-            <i class="bi bi-arrow-left"></i> Back
-        </a>
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            <a href="{{ route('collection') }}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+
+            @if($watchItem->trailer_url)
+                <button type="button" class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#trailerModal">
+                    <i class="bi bi-film"></i> Trailer
+                </button>
+            @endif
+        </div>
 
         @auth
             <form method="POST" action="{{ route('watchitem.favorite', $watchItem->id) }}">
@@ -67,6 +75,11 @@
                             <i class="bi bi-clock"></i> {{ $watchItem->duration }} min
                         </span>
                     @endif
+
+                    <a href="{{ route('watch', ['id' => $watchItem->id]) }}" class="btn btn-gold btn-sm">
+                        <i class="bi bi-play-fill"></i>
+                        {{ $watchItem->isMovie() ? 'Nonton Film' : 'Nonton Semua' }}
+                    </a>
                 </div>
             </div>
 
@@ -243,6 +256,9 @@
                             <span class="fw-semibold">
                                 <i class="bi bi-person-circle text-body-secondary"></i>
                                 {{ $review->user ? $review->user->username : 'User' }}
+                                @if($review->user && $review->user->isVip())
+                                    <span class="badge vip-badge"><i class="bi bi-crown-fill"></i> VIP</span>
+                                @endif
                             </span>
                             <span class="d-flex flex-wrap align-items-center gap-2">
                                 @if($review->rating)
@@ -329,4 +345,158 @@
 
 </div>
 
+{{-- ============ MODAL TRAILER ============ --}}
+@if($watchItem->trailer_url)
+<div class="modal fade" id="trailerModal" tabindex="-1" aria-labelledby="trailerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content trailer-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title text-white h6" id="trailerModalLabel">
+                    <i class="bi bi-film"></i> Trailer - {{ $watchItem->title }}
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body pt-0">
+                <div class="trailer-stage">
+                    <div class="ratio ratio-16x9 trailer-holder" id="trailerHolder"></div>
+
+                    {{-- arahan muncul saat trailer selesai --}}
+                    <div id="trailerEndCta" class="trailer-end-cta d-none">
+                        <div class="text-center">
+                            <p class="mb-3 fw-semibold text-white">Mau nonton versi lengkapnya?</p>
+                            <a href="{{ route('watch', ['id' => $watchItem->id]) }}" class="btn btn-gold">
+                                <i class="bi bi-play-circle-fill"></i> Nonton Full Version
+                            </a>
+                            <button type="button" class="btn btn-outline-light btn-sm d-block mx-auto mt-2" id="btnReplayTrailer">
+                                <i class="bi bi-arrow-counterclockwise"></i> Putar Ulang Trailer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap justify-content-between align-items-center mt-3 gap-2">
+                    <span class="small text-body-secondary" id="trailerHint">
+                        Trailer gratis &middot; setelah selesai, lanjut nonton full.
+                    </span>
+                    <a href="{{ route('watch', ['id' => $watchItem->id]) }}" class="btn btn-gold btn-sm">
+                        <i class="bi bi-play-fill"></i> {{ $watchItem->isMovie() ? 'Nonton Film' : 'Nonton Semua' }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+
 @endsection
+
+@push('scripts')
+@if($watchItem->trailer_url)
+<script>
+    (function () {
+        var TRAILER_URL = @json($watchItem->trailer_url);
+        var WATCH_URL = @json(route('watch', ['id' => $watchItem->id]));
+
+        var holder = document.getElementById('trailerHolder');
+        var endCta = document.getElementById('trailerEndCta');
+        var ytPending = null;
+        var ytLoading = false;
+
+        function isYouTube(url) {
+            return /(youtu\.be|youtube\.com)/i.test(url);
+        }
+
+        function ytId(url) {
+            var m = url.match(/youtu\.be\/([A-Za-z0-9_-]+)/)
+                 || url.match(/[?&]v=([A-Za-z0-9_-]+)/)
+                 || url.match(/youtube\.com\/shorts\/([A-Za-z0-9_-]+)/)
+                 || url.match(/youtube\.com\/embed\/([A-Za-z0-9_-]+)/);
+            return m ? m[1] : null;
+        }
+
+        function showEndCta() {
+            if (endCta) endCta.classList.remove('d-none');
+        }
+
+        function loadYouTubeApi() {
+            if (ytLoading) return;
+            ytLoading = true;
+            var s = document.createElement('script');
+            s.src = 'https://www.youtube.com/iframe_api';
+            document.head.appendChild(s);
+        }
+
+        window.onYouTubeIframeAPIReady = function () {
+            if (ytPending) {
+                var mount = ytPending;
+                ytPending = null;
+                mount();
+            }
+        };
+
+        function renderTrailer() {
+            if (!holder) return;
+
+            if (endCta) endCta.classList.add('d-none');
+            holder.innerHTML = '';
+
+            if (isYouTube(TRAILER_URL)) {
+                var id = ytId(TRAILER_URL);
+                if (!id) return;
+
+                var mountPoint = document.createElement('div');
+                holder.appendChild(mountPoint);
+
+                var mount = function () {
+                    new YT.Player(mountPoint, {
+                        videoId: id,
+                        playerVars: { autoplay: 1, rel: 0 },
+                        events: {
+                            onStateChange: function (e) {
+                                if (e.data === YT.PlayerState.ENDED) showEndCta();
+                            }
+                        }
+                    });
+                };
+
+                if (window.YT && window.YT.Player) {
+                    mount();
+                } else {
+                    ytPending = mount;
+                    loadYouTubeApi();
+                }
+            } else if (/\.(mp4|webm|ogg|ogv)(\?|$)/i.test(TRAILER_URL)) {
+                var video = document.createElement('video');
+                video.src = TRAILER_URL;
+                video.controls = true;
+                video.autoplay = true;
+                video.playsInline = true;
+                video.className = 'trailer-video';
+                video.addEventListener('ended', showEndCta);
+                holder.appendChild(video);
+            } else {
+                var frame = document.createElement('iframe');
+                frame.src = TRAILER_URL;
+                frame.allow = 'autoplay; fullscreen; encrypted-media';
+                frame.allowFullscreen = true;
+                frame.className = 'trailer-iframe';
+                holder.appendChild(frame);
+            }
+        }
+
+        var modalEl = document.getElementById('trailerModal');
+        if (modalEl) {
+            modalEl.addEventListener('show.bs.modal', renderTrailer);
+            modalEl.addEventListener('hidden.bs.modal', function () {
+                if (holder) holder.innerHTML = '';
+                ytPending = null;
+            });
+        }
+
+        var replay = document.getElementById('btnReplayTrailer');
+        if (replay) replay.addEventListener('click', renderTrailer);
+    })();
+</script>
+@endif
+@endpush

@@ -30,7 +30,8 @@ class AuthController extends Controller
 
         if ($user && Hash::check($credentials['password'], $user->password)) {
             Auth::login($user);
-            return redirect('/');
+            // kembali ke halaman semula (mis. halaman nonton) bila ada
+            return redirect()->intended('/');
         }
 
         return back()->withErrors(['username' => 'Username atau password salah']);

@@ -41,4 +41,10 @@ return [
         'thread_error' => env('TELEGRAM_THREAD_ERROR', 3),
         'thread_review' => env('TELEGRAM_THREAD_REVIEW', 2),
     ],
+
+    'midtrans' => [
+        'server_key' => env('MIDTRANS_SERVER_KEY'),
+        'client_key' => env('MIDTRANS_CLIENT_KEY'),
+        'is_production' => (bool) env('MIDTRANS_IS_PRODUCTION', false),
+    ],
 ];

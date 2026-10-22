@@ -55,7 +55,15 @@
                             data-submit="Ya, Logout">Logout</button>
                     </form>
                 @elseif(auth()->check())
-                    <span class="nav-user">{{ auth()->user()->username }}</span>
+                    @if(auth()->user()->isVip())
+                        <span class="nav-user nav-user-vip">
+                            <i class="bi bi-crown-fill"></i>
+                            {{ auth()->user()->username }}
+                            <span class="vip-badge">VIP</span>
+                        </span>
+                    @else
+                        <span class="nav-user">{{ auth()->user()->username }}</span>
+                    @endif
                     <form method="POST" action="{{ route('logout') }}" class="d-inline">
                         @csrf
                         <button type="submit" class="nav-link-btn"

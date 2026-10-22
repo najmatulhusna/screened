@@ -149,6 +149,42 @@
             </div>
         </div>
 
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="card-title"><i class="bi bi-link-45deg"></i> Streaming &amp; Trailer</h3>
+            </div>
+
+            <div class="card-body">
+                <div class="row g-3">
+
+                    <div class="col-12">
+                        <label class="form-label" for="trailer_url">Trailer URL</label>
+                        <input type="text" name="trailer_url" id="trailer_url"
+                            class="form-control @error('trailer_url') is-invalid @enderror"
+                            value="{{ old('trailer_url', $watchItem->trailer_url) }}"
+                            placeholder="https://www.youtube.com/watch?v=... atau link video trailer">
+                        <div class="form-text">YouTube / MP4 / link embed. Kosongkan jika tidak ada trailer.</div>
+                        @error('trailer_url')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label">Stream Links (per episode)</label>
+                        @include('admin._stream_links_box', ['existing' => $streamLinksMap])
+                        <div class="form-text">
+                            Movie: 1 link (URL Film). Serial/Drama/Tv Show: isi link per nomor episode.
+                            Kosongkan URL untuk menghapus link episode tersebut.
+                        </div>
+                        @error('stream_links')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title"><i class="bi bi-star"></i> Your Review</h3>
@@ -204,4 +240,6 @@
     </form>
 
 </div>
+
+@include('admin._stream_links_js')
 @endsection
