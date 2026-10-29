@@ -7,6 +7,7 @@ use App\Models\WatchItem;
 use App\Models\Review;
 use App\Models\User;
 use App\Models\Admin;
+use App\Models\Transaction;
 
 class AdminController extends Controller
 {
@@ -62,6 +63,15 @@ class AdminController extends Controller
         $totalReviews = Review::count();
         $avgRating = (float) WatchItem::whereNotNull('rating')->avg('rating');
 
+        // ringkasan transaksi + 5 transaksi terbaru
+        $txStats = [
+            'success_amount' => (float) Transaction::where('status', Transaction::STATUS_SUCCESS)->sum('amount'),
+            'success_count'  => Transaction::where('status', Transaction::STATUS_SUCCESS)->count(),
+            'pending_count'  => Transaction::where('status', Transaction::STATUS_PENDING)->count(),
+            'total_count'    => Transaction::count(),
+        ];
+        $recentTransactions = Transaction::with('user')->latest()->take(5)->get();
+
         return view('admin.dashboard', compact(
             'watchItems',
             'typeStats',
@@ -69,7 +79,9 @@ class AdminController extends Controller
             'totalUsers',
             'totalAdmins',
             'totalReviews',
-            'avgRating'
+            'avgRating',
+            'txStats',
+            'recentTransactions'
         ));
     }
 

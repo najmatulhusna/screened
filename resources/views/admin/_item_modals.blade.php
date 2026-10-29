@@ -143,7 +143,7 @@
 
                                 <div class="col-12">
                                     <label class="form-label">Stream Links (per episode)</label>
-                                    @include('admin._stream_links_box')
+                                    @include('admin.stream_links')
                                     <div class="form-text">
                                         Movie: 1 link (URL Film). Serial: isi per nomor episode (Ep 1, Ep 2, ...).
                                     </div>

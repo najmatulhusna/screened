@@ -5,28 +5,16 @@
 @section('content')
 <div class="container-fluid">
 
-    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-        <div class="d-flex flex-wrap align-items-center gap-2">
-            <a href="{{ route('collection') }}" class="btn btn-outline-secondary btn-sm">
-                <i class="bi bi-arrow-left"></i> Back
-            </a>
+    <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
+        <a href="{{ route('collection') }}" class="text-decoration-none text-body-secondary">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
 
-            @if($watchItem->trailer_url)
-                <button type="button" class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#trailerModal">
-                    <i class="bi bi-film"></i> Trailer
-                </button>
-            @endif
-        </div>
-
-        @auth
-            <form method="POST" action="{{ route('watchitem.favorite', $watchItem->id) }}">
-                @csrf
-                <button type="submit" class="btn btn-sm {{ $isFavorited ? 'btn-warning' : 'btn-outline-warning' }}">
-                    <i class="bi bi-star{{ $isFavorited ? '-fill' : '' }}"></i>
-                    {{ $isFavorited ? '★ Favorited' : 'Add to Favorites' }}
-                </button>
-            </form>
-        @endauth
+        @if($watchItem->trailer_url)
+            <button type="button" class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#trailerModal">
+                <i class="bi bi-film"></i> Trailer
+            </button>
+        @endif
     </div>
 
     <div class="card shadow-sm mb-4">
@@ -55,23 +43,23 @@
                     {{ $watchItem->type }} &middot; {{ $watchItem->release_year }} &middot; {{ $watchItem->genre }}
                 </p>
 
-                <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">
-                    <span class="badge text-bg-dark">{{ $watchItem->type }}</span>
+                <div class="d-flex flex-wrap justify-content-center align-items-center gap-2 mb-3 detail-actions">
+                    <span class="badge">{{ $watchItem->type }}</span>
 
                     @if($watchItem->rating)
-                        <span class="badge text-bg-warning">
+                        <span class="badge">
                             <i class="bi bi-star-fill"></i> {{ $watchItem->rating }}/10
                         </span>
                     @endif
 
                     @if($watchItem->total_episodes)
-                        <span class="badge text-bg-secondary">
+                        <span class="badge">
                             <i class="bi bi-collection-play"></i> {{ $watchItem->total_episodes }} Episode
                         </span>
                     @endif
 
                     @if($watchItem->duration)
-                        <span class="badge text-bg-secondary">
+                        <span class="badge">
                             <i class="bi bi-clock"></i> {{ $watchItem->duration }} min
                         </span>
                     @endif
@@ -80,6 +68,16 @@
                         <i class="bi bi-play-fill"></i>
                         {{ $watchItem->isMovie() ? 'Nonton Film' : 'Nonton Semua' }}
                     </a>
+
+                    @auth
+                        <form method="POST" action="{{ route('watchitem.favorite', $watchItem->id) }}" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-sm {{ $isFavorited ? 'btn-warning' : 'btn-outline-warning' }}">
+                                <i class="bi bi-star{{ $isFavorited ? '-fill' : '' }}"></i>
+                                {{ $isFavorited ? '★ Favorited' : 'Add to Favorites' }}
+                            </button>
+                        </form>
+                    @endauth
                 </div>
             </div>
 

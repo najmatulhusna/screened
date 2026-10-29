@@ -18,6 +18,7 @@ Route::get('/watch/{id}/{ep?}', [WatchController::class, 'show'])
     ->name('watch');
 
 // Payment (Midtrans)
+Route::get('/vip', [PaymentController::class, 'vipPage'])->name('vip');
 Route::post('/checkout', [PaymentController::class, 'checkout'])->middleware('auth')->name('checkout');
 Route::get('/payment/status/{orderId}', [PaymentController::class, 'status'])->middleware('auth')->name('payment.status');
 Route::post('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
@@ -44,7 +45,7 @@ Route::post('/admin/logout', [AuthController::class, 'adminLogout'])->name('admi
 
 // Admin Panel (protected by admin middleware)
 use App\Http\Controllers\Admin\TransactionController;
-use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\VipPackageController;
 
 Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
@@ -57,10 +58,15 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::put('/edit/{id}', [AdminController::class, 'update'])->name('update');
     Route::delete('/delete/{id}', [AdminController::class, 'destroy'])->name('destroy');
 
-    // Transaksi & pengaturan VIP
+    // Transaksi & pengaturan VIP (pengaturan digabung ke halaman ini)
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions');
-    Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
-    Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
+    Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');
+    Route::get('/api/transactions', [TransactionController::class, 'apiIndex'])->name('api.transactions');
+    Route::delete('/transactions/{id}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
+
+    // Kelola paket VIP (harga + durasi)
+    Route::post('/vip-packages', [VipPackageController::class, 'store'])->name('packages.store');
+    Route::delete('/vip-packages/{id}', [VipPackageController::class, 'destroy'])->name('packages.destroy');
 });
 
 Route::get('/_tg-debug', fn () => [

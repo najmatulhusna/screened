@@ -1841,3 +1841,84 @@ body.public-page .nav-user.nav-user-vip .vip-badge {
     font-size: .85rem;
 }
 
+/* ==================================================================== */
+/* Baris badge + tombol halaman detail: satu keluarga warna (emas)      */
+/* ==================================================================== */
+body.public-page .detail-actions .badge {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid var(--border-color);
+    font-weight: 600;
+    font-size: .74rem;
+    padding: 6px 14px;
+    border-radius: 30px;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+/* tombol Nonton: emas pekat, satu nuansa dengan badge (tanpa gradasi terang) */
+body.public-page .detail-actions .btn-gold {
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    color: #14130e;
+    box-shadow: none;
+    font-weight: 600;
+}
+
+body.public-page .detail-actions .btn-gold:hover,
+body.public-page .detail-actions .btn-gold:focus {
+    background: #dcb969;
+    border-color: #dcb969;
+    color: #14130e;
+    box-shadow: 0 3px 10px rgba(201, 162, 77, .3);
+    transform: none;
+}
+
+/* tombol favorite sudah memakai --accent (lihat .btn-warning/.btn-outline-warning),
+   cukup samakan bobot & ukurannya dengan badge di sebelahnya */
+body.public-page .detail-actions .btn-warning,
+body.public-page .detail-actions .btn-outline-warning {
+    font-weight: 600;
+    font-size: .78rem;
+}
+
+/* ==================================================================== */
+/* Halaman VIP: konten dipusatkan (center) di tengah halaman             */
+/* ==================================================================== */
+body.public-page .vip-page {
+    max-width: 1040px;
+    margin-inline: auto;
+    text-align: center;
+}
+
+body.public-page .vip-page .vip-price {
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--accent);
+    margin: .6rem 0;
+}
+
+body.public-page .vip-page .vip-benefits {
+    max-width: 240px;
+    color: var(--text-secondary);
+}
+
+body.public-page .vip-page .vip-benefits i {
+    color: var(--accent);
+}
+
+body.public-page .vip-page .vip-renew-note {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+body.public-page .vip-page .vip-card-col .card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+body.public-page .vip-page .vip-card-col .card:hover {
+    border-color: var(--accent);
+}
+

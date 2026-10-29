@@ -76,9 +76,10 @@ class MidtransService
             ],
         ];
 
+        // Endpoint Snap Midtrans: /snap/v1/transactions (bukan /v1/transactions -> 404)
         $response = Http::withBasicAuth($this->serverKey(), '')
             ->timeout(30)
-            ->post($this->baseUrl().'/v1/transactions', $payload);
+            ->post($this->baseUrl().'/snap/v1/transactions', $payload);
 
         if (! $response->successful()) {
             report(new RuntimeException(

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use App\Models\User;
+use App\Models\VipPackage;
 use App\Services\MidtransService;
 use App\Services\SettingsService;
 use Illuminate\Http\Request;
@@ -11,6 +12,40 @@ use Illuminate\Support\Str;
 
 class PaymentController extends Controller
 {
+    /**
+     * Halaman VIP (terbuka untuk tamu & user login).
+     * - Tamu / non-VIP : lihat harga + tombol beli (login dulu bila belum login)
+     * - User VIP       : masa berlaku + kartu harga untuk perpanjang
+     */
+    public function vipPage()
+    {
+        $user = auth()->user();
+
+        $price = (float) SettingsService::get('vip_price', 30000);
+        $days = (int) SettingsService::get('vip_days', 30);
+
+        // kartu yang ditampilkan: paket dari admin; kalau belum ada, pakai harga pengaturan
+        $packages = VipPackage::active()->orderBy('price')->orderBy('duration_days')->get();
+
+        if ($packages->isEmpty()) {
+            $packages = collect([
+                new VipPackage([
+                    'name' => 'VIP SCREENED',
+                    'price' => (int) $price,
+                    'duration_days' => $days,
+                ]),
+            ]);
+        }
+
+        return view('vip', [
+            'price' => $price,
+            'days' => $days,
+            'isVip' => (bool) ($user && $user->isVip()),
+            'vipUntil' => $user?->vip_until,
+            'packages' => $packages,
+        ]);
+    }
+
     /** Checkout sesi Snap untuk VIP. */
     public function checkout(Request $request)
     {
@@ -20,12 +55,20 @@ class PaymentController extends Controller
 
         $user = auth()->user();
 
-        if ($user->isVip()) {
-            return response()->json(['message' => 'Kamu sudah VIP.'], 422);
+        // user VIP tetap boleh bayar -> masa aktifnya menumpuk (perpanjangan)
+        // harga & durasi diambil dari paket VIP pilihan (atau pengaturan admin bila tanpa paket)
+        $package = null;
+        if ($request->filled('package_id')) {
+            $package = VipPackage::active()->find($request->input('package_id'));
+
+            if (! $package) {
+                return response()->json(['message' => 'Paket VIP tidak ditemukan atau sudah nonaktif.'], 422);
+            }
         }
 
-        $price = (float) SettingsService::get('vip_price', 30000);
-        $days = (int) SettingsService::get('vip_days', 30);
+        $price = $package ? (float) $package->price : (float) SettingsService::get('vip_price', 30000);
+        $days = $package ? (int) $package->duration_days : (int) SettingsService::get('vip_days', 30);
+        $planName = $package ? $package->name : 'VIP SCREENED';
 
         if ($price <= 0) {
             return response()->json(['message' => 'Harga VIP belum dikonfigurasi admin.'], 422);
@@ -56,7 +99,7 @@ class PaymentController extends Controller
                         'id' => 'vip-'.$days,
                         'price' => (int) $price,
                         'quantity' => 1,
-                        'name' => 'VIP SCREENED '.$days.' hari',
+                        'name' => $planName.' '.$days.' hari',
                     ],
                 ],
                 [
@@ -74,6 +117,7 @@ class PaymentController extends Controller
                 'users_id' => $user->id,
                 'type' => 'vip',
                 'amount' => $price,
+                'duration_days' => $days,
                 'status' => Transaction::STATUS_PENDING,
                 'snap_token' => $snap['token'],
                 'expires_at' => now()->addMinutes(30),
@@ -178,7 +222,9 @@ class PaymentController extends Controller
 
             $user = User::find($transaction->users_id);
             if ($user) {
-                $user->extendVip((int) SettingsService::get('vip_days', 30));
+                // pakai durasi dari transaksi; kalau data lama kosong, pakai pengaturan admin
+                $days = $transaction->duration_days ?: (int) SettingsService::get('vip_days', 30);
+                $user->extendVip($days);
             }
 
             return;

@@ -6,23 +6,11 @@
 <div class="container-fluid watch-page">
 
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-        <a href="{{ route('watchitem.detail', $watchItem->id) }}" class="btn btn-outline-secondary btn-sm">
-            <i class="bi bi-arrow-left"></i> Detail
+        <a href="{{ route('watchitem.detail', $watchItem->id) }}" class="text-decoration-none text-body-secondary">
+            <i class="bi bi-arrow-left"></i> Back
         </a>
 
         <div class="d-flex flex-wrap align-items-center gap-2">
-            @if($isVip)
-                <span class="badge vip-badge">
-                    <i class="bi bi-crown-fill"></i> VIP
-                    @if(auth()->user()->vip_until)
-                        &middot; s/d {{ auth()->user()->vip_until->format('d M Y') }}
-                    @endif
-                </span>
-            @elseif(!$hasFullAccess)
-                <span class="badge text-bg-secondary">
-                    <i class="bi bi-person-lock"></i> Mode Non-VIP
-                </span>
-            @endif
 
             @if($isMovie)
                 <span class="badge text-bg-dark"><i class="bi bi-camera-reels"></i> Film</span>

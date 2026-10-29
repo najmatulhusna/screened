@@ -20,6 +20,7 @@ class Transaction extends Model
         'users_id',
         'type',
         'amount',
+        'duration_days',
         'status',
         'payment_method',
         'midtrans_order_id',
@@ -32,6 +33,7 @@ class Transaction extends Model
     {
         return [
             'amount' => 'decimal:2',
+            'duration_days' => 'integer',
             'paid_at' => 'datetime',
             'expires_at' => 'datetime',
         ];

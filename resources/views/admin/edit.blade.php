@@ -171,7 +171,7 @@
 
                     <div class="col-12">
                         <label class="form-label">Stream Links (per episode)</label>
-                        @include('admin._stream_links_box', ['existing' => $streamLinksMap])
+                        @include('admin.stream_links', ['existing' => $streamLinksMap])
                         <div class="form-text">
                             Movie: 1 link (URL Film). Serial/Drama/Tv Show: isi link per nomor episode.
                             Kosongkan URL untuk menghapus link episode tersebut.
@@ -241,5 +241,4 @@
 
 </div>
 
-@include('admin._stream_links_js')
 @endsection

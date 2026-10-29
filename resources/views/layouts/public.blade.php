@@ -35,6 +35,9 @@
                 <a href="{{ route('collection') }}"
                     class="{{ request()->routeIs('collection') ? 'active' : '' }}">Collection</a>
 
+                <a href="{{ route('vip') }}"
+                    class="{{ request()->routeIs('vip') ? 'active' : '' }}">VIP</a>
+
                 @auth
                     <a href="{{ route('favorites') }}"
                         class="{{ request()->routeIs('favorites') ? 'active' : '' }}">Favorites</a>

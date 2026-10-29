@@ -11,24 +11,7 @@
         </a>
     </div>
 
-    <div class="row">
-        @foreach($typeStats as $stat)
-            <div class="col-6 col-lg-3">
-                <div class="small-box text-bg-{{ $stat['color'] }} mb-4">
-                    <div class="inner">
-                        <h3>{{ $stat['total'] }}</h3>
-                        <p>{{ $stat['type'] }}</p>
-                    </div>
-                    <i class="bi {{ $stat['icon'] }} small-box-icon"></i>
-                    <a href="{{ route('admin.manage') }}"
-                        class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover">
-                        {{ $stat['percent'] }}% dari total <i class="bi bi-link-45deg"></i>
-                    </a>
-                </div>
-            </div>
-        @endforeach
-    </div>
-
+    {{-- ===== RINGKASAN ANGKA ===== --}}
     <div class="row mb-4">
         <div class="col-6 col-lg">
             <div class="info-box shadow-sm">
@@ -75,6 +58,78 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    {{-- ===== 2 GRID BERDAMPINGAN: kiri = konten per tipe, kanan = transaksi ===== --}}
+    <div class="row g-3 mb-4 align-items-stretch">
+
+        {{-- GRID 1 (kiri): Movie / Drama / Series / Tv Show --}}
+        <div class="col-lg-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header py-2 d-flex justify-content-between align-items-center">
+                    <h3 class="card-title h6 mb-0"><i class="bi bi-film"></i> Konten</h3>
+                    <a href="{{ route('admin.manage') }}" class="small text-decoration-none">
+                        Kelola item <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        @foreach($typeStats as $stat)
+                            <div class="col-6">
+                                <div class="border rounded p-3 h-100 d-flex align-items-center justify-content-between gap-2">
+                                    <div>
+                                        <div class="small text-body-secondary">{{ $stat['type'] }}</div>
+                                        <div class="h4 fw-bold mb-0">{{ $stat['total'] }}</div>
+                                    </div>
+                                    <span class="badge text-bg-{{ $stat['color'] }}">{{ $stat['percent'] }}%</span>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- GRID 2 (kanan): Transaksi --}}
+        <div class="col-lg-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header py-2 d-flex justify-content-between align-items-center">
+                    <h3 class="card-title h6 mb-0"><i class="bi bi-credit-card"></i> Transaksi VIP</h3>
+                    <a href="{{ route('admin.transactions') }}" class="small text-decoration-none">
+                        Semua transaksi <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="border rounded p-3 h-100">
+                                <div class="small text-body-secondary">Pendapatan VIP</div>
+                                <div class="h4 fw-bold mb-0 text-success">Rp {{ number_format($txStats['success_amount'], 0, ',', '.') }}</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="border rounded p-3 h-100">
+                                <div class="small text-body-secondary">Total Transaksi</div>
+                                <div class="h4 fw-bold mb-0">{{ $txStats['total_count'] }}</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="border rounded p-3 h-100">
+                                <div class="small text-body-secondary">Berhasil</div>
+                                <div class="h4 fw-bold mb-0 text-success">{{ $txStats['success_count'] }}</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="border rounded p-3 h-100">
+                                <div class="small text-body-secondary">Pending</div>
+                                <div class="h4 fw-bold mb-0 text-warning">{{ $txStats['pending_count'] }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">

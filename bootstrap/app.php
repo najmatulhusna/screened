@@ -4,6 +4,8 @@ use App\Services\TelegramNotifier;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -23,6 +25,25 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // Token CSRF kedaluwarsa (419) -> jangan halaman kosong, kembalikan ke halaman
+        // dengan pesan agar user tinggal mengulangi aksinya.
+        // Catatan: TokenMismatchException sudah diubah framework menjadi HttpException(419)
+        // sebelum renderable callback dipanggil, jadi yang dicocokkan HttpException status 419.
+        $exceptions->render(function (HttpException $e, Request $request) {
+            if ($e->getStatusCode() !== 419) {
+                return null;
+            }
+
+            $message = 'Sesi keamanan Anda sudah berakhir. Silakan coba sekali lagi; '
+                . 'bila terus terjadi, muat ulang halaman lalu ulangi.';
+
+            if ($request->expectsJson()) {
+                return response()->json(['message' => $message], 419);
+            }
+
+            return redirect()->back()->with('error', $message);
+        });
+
         $exceptions->report(function (Throwable $e) {
             if (app()->isLocal()) {
                 return;
