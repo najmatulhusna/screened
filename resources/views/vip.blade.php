@@ -52,7 +52,7 @@
                             <li class="mb-1"><i class="bi bi-check-circle-fill me-2"></i>Dapatkan profil VIP</li>
                             <li class="mb-1"><i class="bi bi-check-circle-fill me-2"></i>Buat album pribadi tanpa batas</li>
                             <li class="mb-1"><i class="bi bi-check-circle-fill me-2"></i>Simpan koleksi film & serial favorit</li>
-                            <li class="mb-1"><i class="bi bi-check-circle-fill me-2"></i>Akses statistik koleksi albummu secara lengkap</li>
+                            <li class="mb-1"><i class="bi bi-check-circle-fill me-2"></i>Pantau statistik album pribadi</li>
                             <li><i class="bi bi-check-circle-fill me-2"></i>Berlaku {{ $package->duration_days }} hari</li>
                         </ul>
 
