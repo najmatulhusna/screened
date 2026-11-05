@@ -207,7 +207,7 @@
 
                                 @if($entry->watch_item_id === null)
                                     <span class="badge album-manual-badge position-absolute top-0 end-0 m-1">
-                                        <i class="bi bi-pencil" aria-hidden="true"></i> Manual
+                                        <i class="bi bi-pencil" aria-hidden="true"></i> 
                                     </span>
                                 @endif
                             </div>
@@ -348,7 +348,8 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                         </div>
 
-                        <form action="{{ route('myalbum.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('myalbum.store') }}" method="POST" enctype="multipart/form-data"
+                            class="d-flex flex-column overflow-hidden" style="min-height:0;">
                             @csrf
 
                             <div class="modal-body">

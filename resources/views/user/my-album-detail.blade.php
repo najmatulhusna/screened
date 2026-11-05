@@ -242,7 +242,8 @@
                     </div>
 
                     <form action="{{ route('myalbum.update', $entry->id) }}" method="POST"
-                        enctype="multipart/form-data">
+                        enctype="multipart/form-data"
+                        class="d-flex flex-column overflow-hidden" style="min-height:0;">
                         @csrf
                         @method('PUT')
 

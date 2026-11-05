@@ -3,7 +3,8 @@
 @section('title', ($mode === 'edit' ? 'Edit - ' : 'Add Manually - ') . 'My Album - SCREENED')
 
 @section('content')
-<div class="container my-album-page album-form-page">
+<!-- Tambahkan pb-5, mb-5, dan style min-height agar halaman punya ruang scroll ke bawah yang leluasa -->
+<div class="container my-album-page album-form-page pb-5 mb-5" style="min-height: 100vh;">
 
     <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
         <a href="{{ route('myalbum.index') }}" class="text-decoration-none text-body-secondary">
@@ -27,9 +28,11 @@
             @method('PUT')
         @endif
 
+        {{-- Memuat field form dari parsial asli tanpa mengubah kodenya --}}
         @include('partials.album-form-fields', ['entry' => $entry])
 
-        <div class="d-flex flex-wrap gap-2 mb-4">
+        <!-- Wrapper tombol simpan dan batal dengan margin bawah yang aman dari potongan layar -->
+        <div class="d-flex flex-wrap gap-2 mb-5 mt-4">
             <button type="submit" class="btn btn-gold">
                 <i class="bi bi-check-lg" aria-hidden="true"></i>
                 {{ $mode === 'edit' ? 'Simpan Perubahan' : 'Tambah ke My Album' }}

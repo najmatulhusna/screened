@@ -90,7 +90,7 @@
             </div>
 
             <div class="col-6 col-md-3 col-lg-2">
-                <label class="form-label" for="fDuration">Duration (menit)</label>
+                <label class="form-label" for="fDuration">Duration (mnt)</label>
                 <input type="number" name="duration" id="fDuration" class="form-control"
                     min="1" max="10000" placeholder="120" value="{{ old('duration', $entry?->duration) }}">
                 @error('duration')
