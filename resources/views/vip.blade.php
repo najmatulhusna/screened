@@ -8,7 +8,7 @@
     <div class="text-center mb-4">
         <h1 class="h3 mb-2"><i class="bi bi-crown-fill" style="color: var(--accent);"></i> Jadi Member VIP</h1>
         <p class="text-body-secondary mb-0">
-            Nonton semua film &amp; episode tanpa batas, dan profile VIP.
+            Buat album menontonmu, dan dapatkan profile VIP.
         </p>
 
         @auth
@@ -49,9 +49,10 @@
                         @endif
 
                         <ul class="list-unstyled small text-start mx-auto mb-4 vip-benefits">
-                            <li class="mb-1"><i class="bi bi-check-circle-fill me-2"></i>Nonton semua film &amp; serial</li>
-                            <li class="mb-1"><i class="bi bi-check-circle-fill me-2"></i>Semua episode terbuka</li>
-                            <li class="mb-1"><i class="bi bi-check-circle-fill me-2"></i>Tanpa batas waktu nonton</li>
+                            <li class="mb-1"><i class="bi bi-check-circle-fill me-2"></i>Dapatkan profil VIP</li>
+                            <li class="mb-1"><i class="bi bi-check-circle-fill me-2"></i>Buat album pribadi tanpa batas</li>
+                            <li class="mb-1"><i class="bi bi-check-circle-fill me-2"></i>Simpan koleksi film & serial favorit</li>
+                            <li class="mb-1"><i class="bi bi-check-circle-fill me-2"></i>Akses statistik koleksi albummu secara lengkap</li>
                             <li><i class="bi bi-check-circle-fill me-2"></i>Berlaku {{ $package->duration_days }} hari</li>
                         </ul>
 
