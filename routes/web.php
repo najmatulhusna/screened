@@ -12,12 +12,6 @@ Route::get('/', [WatchItemController::class, 'index'])->name('collection');
 Route::get('/watchitem/{id}', [WatchItemController::class, 'detail'])->name('watchitem.detail');
 Route::post('/watchitem/{id}/review', [WatchItemController::class, 'storeReview'])->name('watchitem.review');
 
-// Streaming (wajib login; akses VIP/preview diatur di dalam controller)
-Route::get('/watch/{id}/{ep?}', [WatchController::class, 'show'])
-    ->whereNumber('id')->whereNumber('ep')
-    ->middleware('auth')
-    ->name('watch');
-
 // Payment (Midtrans)
 Route::get('/vip', [PaymentController::class, 'vipPage'])->name('vip');
 Route::post('/checkout', [PaymentController::class, 'checkout'])->middleware('auth')->name('checkout');

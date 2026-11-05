@@ -98,23 +98,7 @@
         $('#edit_rating').val(d.review_rating ?? '');
         $('#edit_review_text').val(d.review_text || '');
         $('#edit_poster').val('');
-        $('#edit_trailer_url').val(d.trailer_url || '');
-
-        // stream links per episode (dari API admin, bentuk map {episode: url})
-        var slBox = document.getElementById('edit_stream_links');
-        if (slBox) {
-            var slMap = {};
-            if (Array.isArray(d.stream_links)) {
-                d.stream_links.forEach(function (r) {
-                    if (r) slMap[String(r.episode_number)] = r.url || '';
-                });
-            } else if (d.stream_links) {
-                slMap = d.stream_links;
-            }
-            slBox.setAttribute('data-existing', JSON.stringify(slMap));
-            if (window.renderStreamLinks) window.renderStreamLinks(slBox);
-        }
-
+        
         if (d.poster) {
             $('#edit_poster_preview').attr('src', d.poster).removeClass('d-none');
             $('#edit_poster_none').addClass('d-none');
