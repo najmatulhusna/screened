@@ -64,20 +64,40 @@
                         </span>
                     @endif
 
-                    <a href="{{ route('watch', ['id' => $watchItem->id]) }}" class="btn btn-gold btn-sm">
-                        <i class="bi bi-play-fill"></i>
-                        {{ $watchItem->isMovie() ? 'Nonton Film' : 'Nonton Semua' }}
-                    </a>
-
                     @auth
                         <form method="POST" action="{{ route('watchitem.favorite', $watchItem->id) }}" class="d-inline">
                             @csrf
                             <button type="submit" class="btn btn-sm {{ $isFavorited ? 'btn-warning' : 'btn-outline-warning' }}">
                                 <i class="bi bi-star{{ $isFavorited ? '-fill' : '' }}"></i>
-                                {{ $isFavorited ? '★ Favorited' : 'Add to Favorites' }}
+                                {{ $isFavorited ? 'Favorited' : 'Add to Favorites' }}
                             </button>
                         </form>
                     @endauth
+
+                    {{-- Add to My Album: guest -> Login, Free/VIP habis -> popup VIP, VIP -> tambah --}}
+                    @if(! auth()->check())
+                        <a href="{{ route('login') }}" class="btn btn-sm btn-outline-success">
+                            <i class="bi bi-collection-play" aria-hidden="true"></i> Add to My Album
+                        </a>
+                    @elseif($isVipUser)
+                        @if($inAlbum)
+                            <a href="{{ route('myalbum.index') }}" class="btn btn-sm btn-success">
+                                <i class="bi bi-check2-circle" aria-hidden="true"></i> In My Album
+                            </a>
+                        @else
+                            <form method="POST" action="{{ route('myalbum.store-from-collection', $watchItem->id) }}" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-sm btn-outline-success">
+                                    <i class="bi bi-collection-play" aria-hidden="true"></i> Add to My Album
+                                </button>
+                            </form>
+                        @endif
+                    @else
+                        <button type="button" class="btn btn-sm btn-outline-success"
+                            data-bs-toggle="modal" data-bs-target="#vipAlbumModal">
+                            <i class="bi bi-collection-play" aria-hidden="true"></i> Add to My Album
+                        </button>
+                    @endif
                 </div>
             </div>
 
@@ -387,13 +407,19 @@
 </div>
 @endif
 
+@auth
+    @include('partials.vip-album-modal')
+@endauth
+
 @endsection
 
 @push('scripts')
 @if($watchItem->trailer_url)
 <script>
     (function () {
-        var TRAILER_URL = @json($watchItem->trailer_url);
+        var TRAILER_URL = @json(\App\Services\VideoEmbed::toEmbed($watchItem->trailer_url));
+        var TRAILER_RAW = @json($watchItem->trailer_url);
+        var TRAILER_EMBEDDABLE = @json(\App\Services\VideoEmbed::isEmbeddable(\App\Services\VideoEmbed::toEmbed($watchItem->trailer_url)));
         var WATCH_URL = @json(route('watch', ['id' => $watchItem->id]));
 
         var holder = document.getElementById('trailerHolder');
@@ -473,6 +499,21 @@
                 video.className = 'trailer-video';
                 video.addEventListener('ended', showEndCta);
                 holder.appendChild(video);
+            } else if (!TRAILER_EMBEDDABLE) {
+                // host menolak iframe (t.me dll) -> tombol buka di tab baru, bukan frame kosong
+                var open = document.createElement('div');
+                open.className = 'trailer-fallback d-flex flex-column align-items-center justify-content-center h-100 text-body-secondary';
+                open.innerHTML = '<i class="bi bi-box-arrow-up-right fs-1 mb-2"></i>'
+                    + '<p class="mb-2 small">Trailer dibuka di tab baru</p>';
+                var btn = document.createElement('a');
+                btn.className = 'btn btn-outline-primary btn-sm';
+                btn.href = TRAILER_RAW;
+                btn.target = '_blank';
+                btn.rel = 'noopener noreferrer';
+                btn.innerHTML = '<i class="bi bi-play-circle"></i> Buka Trailer';
+                open.appendChild(btn);
+                holder.appendChild(open);
+                showEndCta();
             } else {
                 var frame = document.createElement('iframe');
                 frame.src = TRAILER_URL;

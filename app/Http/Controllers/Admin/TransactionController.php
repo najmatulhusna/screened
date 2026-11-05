@@ -104,12 +104,30 @@ class TransactionController extends Controller
         );
     }
 
-    /** Hapus satu baris transaksi dari dashboard / halaman transaksi. */
+    /**
+     * Hapus satu baris transaksi.
+     * Transaksi berstatus success = VIP yang pernah diberikan; saat dihapus,
+     * status VIP user ikut dicabut (user kehilangan fitur VIP).
+     */
     public function destroy($id)
     {
         $transaction = Transaction::findOrFail($id);
+        $user = User::find($transaction->users_id);
+
+        $revoked = false;
+        if ($transaction->isPaid() && $user && $user->isVip()) {
+            $user->vip_until = null;   // cabut VIP user
+            $user->save();
+            $revoked = true;
+        }
+
         $transaction->delete();
 
-        return back()->with('success', 'Transaksi ' . $transaction->midtrans_order_id . ' dihapus.');
+        $message = 'Transaksi ' . $transaction->midtrans_order_id . ' dihapus.';
+        if ($revoked) {
+            $message .= ' Status VIP ' . $user->username . ' ikut dicabut — user tidak lagi VIP.';
+        }
+
+        return back()->with('success', $message);
     }
 }

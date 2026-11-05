@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\WatchController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\MyAlbumController;
 
 // Collection
 Route::get('/', [WatchItemController::class, 'index'])->name('collection');
@@ -37,6 +38,24 @@ Route::post('/watchitem/{id}/favorite', [WatchItemController::class, 'toggleFavo
 Route::get('/favorites', [WatchItemController::class, 'favorites'])->name('favorites')->middleware('auth');
 Route::delete('/favorites/{id}', [WatchItemController::class, 'destroyFavorite'])->name('favorites.destroy')->middleware('auth');
 Route::delete('/watchitem/{id}/progress', [WatchItemController::class, 'destroyProgress'])->name('watchitem.progress.destroy')->middleware('auth');
+
+// My Album (album tontonan pribadi - fitur VIP).
+// Halaman bisa dibuka guest (state terkunci); semua aksi tulis wajib login + VIP (dicek lagi di backend).
+Route::get('/my-album', [MyAlbumController::class, 'index'])->name('myalbum.index');
+Route::post('/my-album/from-collection/{id}', [MyAlbumController::class, 'storeFromCollection'])
+    ->whereNumber('id')->middleware('auth')->name('myalbum.store-from-collection');
+Route::get('/my-album/create', [MyAlbumController::class, 'create'])
+    ->middleware('auth')->name('myalbum.create');
+Route::post('/my-album', [MyAlbumController::class, 'store'])
+    ->middleware('auth')->name('myalbum.store');
+Route::get('/my-album/{id}', [MyAlbumController::class, 'show'])
+    ->whereNumber('id')->middleware('auth')->name('myalbum.show');
+Route::get('/my-album/{id}/edit', [MyAlbumController::class, 'edit'])
+    ->whereNumber('id')->middleware('auth')->name('myalbum.edit');
+Route::put('/my-album/{id}', [MyAlbumController::class, 'update'])
+    ->whereNumber('id')->middleware('auth')->name('myalbum.update');
+Route::delete('/my-album/{id}', [MyAlbumController::class, 'destroy'])
+    ->whereNumber('id')->middleware('auth')->name('myalbum.destroy');
 
 // Auth Admin
 Route::get('/admin/login', [AuthController::class, 'showAdminLogin'])->name('admin.login');

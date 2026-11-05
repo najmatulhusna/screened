@@ -44,6 +44,10 @@
                     <a href="{{ route('statistics') }}"
                         class="{{ request()->routeIs('statistics') ? 'active' : '' }}">Statistics</a>
                 @endauth
+
+                {{-- My Album juga tampil untuk tamu: halamannya menampilkan state terkunci. --}}
+                <a href="{{ route('myalbum.index') }}"
+                    class="{{ request()->routeIs('myalbum.*') ? 'active' : '' }}">My Album</a>
             </nav>
 
             <div class="nav-menu">
